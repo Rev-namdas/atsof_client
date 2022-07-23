@@ -1,4 +1,4 @@
-const dateToUnix = (val) => {
+const DateToUnix = (val) => {
 	const date = new Date(val)
 	date.setHours(0)
 	date.setMinutes(0)
@@ -9,4 +9,4 @@ const dateToUnix = (val) => {
 	return timestamp
 }
 
-export default dateToUnix
+export default DateToUnix
