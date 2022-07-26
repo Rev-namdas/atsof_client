@@ -3,17 +3,68 @@ import * as api from "../../api/AdminApi";
 import Navbar from "../layouts/Navbar";
 
 export default function UserCreatePage() {
-    const initialState = {
+    const initialState = Object.freeze({
         username: "",
         password: "",
         role: "",
         dayoff: "",
-    };
+    });
+    const initialOfficeTime = Object.freeze({
+        6: { starts: 0, ends: 0 },
+        0: { starts: 0, ends: 0 },
+        1: { starts: 0, ends: 0 },
+        2: { starts: 0, ends: 0 },
+        3: { starts: 0, ends: 0 },
+        4: { starts: 0, ends: 0 },
+        5: { starts: 0, ends: 0 },
+    });
+    const initialLeave = Object.freeze({
+        151: 0,
+        161: 0,
+        171: 0,
+        181: 0
+    })
+
     const [details, setDetails] = useState(initialState);
     const [message, setMessage] = useState("");
-    // leave type static & custom
+    // leave type: static & custom
     const [leaveType, setLeaveType] = useState("static");
-    const [leaveDetails, setLeaveDetails] = useState('');
+    const [leaveDetails, setLeaveDetails] = useState("");
+    const [leaves, setLeaves] = useState(initialLeave)
+    // office time type: common & custom
+    const [officeTimeType, setOfficeTimeType] = useState("common");
+    const [officeTime, setOfficeTime] = useState(initialOfficeTime);
+
+    const weekDays = [
+        {
+            name: "Saturday",
+            key: 6,
+        },
+        {
+            name: "Sunday",
+            key: 0,
+        },
+        {
+            name: "Monday",
+            key: 1,
+        },
+        {
+            name: "Tuesday",
+            key: 2,
+        },
+        {
+            name: "Wednesday",
+            key: 3,
+        },
+        {
+            name: "Thursday",
+            key: 4,
+        },
+        {
+            name: "Friday",
+            key: 5,
+        },
+    ];
 
     const handleChange = (e) => {
         if (e.target.name === "role" || e.target.name === "dayoff") {
@@ -30,10 +81,48 @@ export default function UserCreatePage() {
     };
 
     const handleLeaveType = (e) => {
-        setLeaveType(e.target.value)
-        if(e.target.value === 'custom'){
-            setLeaveDetails('')
+        setLeaveType(e.target.value);
+        if (e.target.value === "custom") {
+            setLeaveDetails("");
         }
+    };
+
+    const handleOfficeTime = (e) => {
+        const date = new Date();
+        date.setHours(e.target.value.split(":")[0]);
+        date.setMinutes(e.target.value.split(":")[1]);
+        date.setSeconds(0);
+
+        if (officeTimeType === "custom") {
+            setOfficeTime((curState) => ({
+                ...curState,
+                [parseInt(e.target.dataset.key)]: {
+                    ...curState[e.target.dataset.key],
+                    [e.target.dataset.when]: date.toLocaleTimeString(),
+                },
+            }));
+        }
+
+        if (officeTimeType === "common") {
+            for (let each of weekDays) {
+                setOfficeTime((curState) => ({
+                    ...curState,
+                    [parseInt(each.key)]: {
+                        ...curState[each.key],
+                        [e.target.dataset.when]: date.toLocaleTimeString(),
+                    },
+                }));
+            }
+        }
+    };
+
+    const handleLeave = (e) => {
+        setLeaves((curState) => {
+            return {
+                ...curState,
+                [e.target.name]: parseInt(e.target.value)
+            }
+        })
     }
 
     const handleSubmit = async () => {
@@ -54,6 +143,9 @@ export default function UserCreatePage() {
             <Navbar />
             <div>
                 <h3>User Create Page</h3>
+            </div>
+            <div>
+                <button onClick={() => console.log(officeTime, leaves)}>Print</button>
             </div>
             <input
                 type="text"
@@ -97,200 +189,70 @@ export default function UserCreatePage() {
             <div>
                 <h3>Office Time</h3>
             </div>
-            {[
-                "Saturday",
-                "Sunday",
-                "Monday",
-                "Tuesday",
-                "Wednesday",
-                "Thursday",
-                "Friday",
-            ].map((each, index) => (
-                <div key={index}>
-                    <label htmlFor="day">{each}</label>
-                    <select name="office-hour" id="office-hour">
-                        <option value="">12 AM</option>
-                        <option value="">1 AM</option>
-                        <option value="">2 AM</option>
-                        <option value="">3 AM</option>
-                        <option value="">4 AM</option>
-                        <option value="">5 AM</option>
-                        <option value="">6 AM</option>
-                        <option value="">7 AM</option>
-                        <option value="">8 AM</option>
-                        <option value="">9 AM</option>
-                        <option value="">10 AM</option>
-                        <option value="">11 AM</option>
-                        <option value="">12 PM</option>
-                        <option value="">1 PM</option>
-                        <option value="">2 PM</option>
-                        <option value="">3 PM</option>
-                        <option value="">4 PM</option>
-                        <option value="">5 PM</option>
-                        <option value="">6 PM</option>
-                        <option value="">7 PM</option>
-                        <option value="">8 PM</option>
-                        <option value="">9 PM</option>
-                        <option value="">10 PM</option>
-                        <option value="">11 PM</option>
-                    </select>
-                    <select name="office-minute" id="office-minute">
-                        <option value="">00:00</option>
-                        <option value="">01:00</option>
-                        <option value="">02:00</option>
-                        <option value="">03:00</option>
-                        <option value="">04:00</option>
-                        <option value="">05:00</option>
-                        <option value="">06:00</option>
-                        <option value="">07:00</option>
-                        <option value="">08:00</option>
-                        <option value="">09:00</option>
-                        <option value="">10:00</option>
-                        <option value="">11:00</option>
-                        <option value="">12:00</option>
-                        <option value="">13:00</option>
-                        <option value="">14:00</option>
-                        <option value="">15:00</option>
-                        <option value="">16:00</option>
-                        <option value="">17:00</option>
-                        <option value="">18:00</option>
-                        <option value="">19:00</option>
-                        <option value="">20:00</option>
-                        <option value="">21:00</option>
-                        <option value="">22:00</option>
-                        <option value="">23:00</option>
-                        <option value="">24:00</option>
-                        <option value="">25:00</option>
-                        <option value="">26:00</option>
-                        <option value="">27:00</option>
-                        <option value="">28:00</option>
-                        <option value="">29:00</option>
-                        <option value="">30:00</option>
-                        <option value="">31:00</option>
-                        <option value="">32:00</option>
-                        <option value="">33:00</option>
-                        <option value="">34:00</option>
-                        <option value="">35:00</option>
-                        <option value="">36:00</option>
-                        <option value="">37:00</option>
-                        <option value="">38:00</option>
-                        <option value="">39:00</option>
-                        <option value="">40:00</option>
-                        <option value="">41:00</option>
-                        <option value="">42:00</option>
-                        <option value="">43:00</option>
-                        <option value="">44:00</option>
-                        <option value="">45:00</option>
-                        <option value="">46:00</option>
-                        <option value="">47:00</option>
-                        <option value="">48:00</option>
-                        <option value="">49:00</option>
-                        <option value="">50:00</option>
-                        <option value="">51:00</option>
-                        <option value="">52:00</option>
-                        <option value="">53:00</option>
-                        <option value="">54:00</option>
-                        <option value="">55:00</option>
-                        <option value="">56:00</option>
-                        <option value="">57:00</option>
-                        <option value="">58:00</option>
-                        <option value="">59:00</option>
-                        <option value="">60:00</option>
-                    </select>
 
+            <div>
+                <label htmlFor="office-time">
+                    <input
+                        type="radio"
+                        name="office-time"
+                        id="office-time"
+                        value="common"
+                        checked={officeTimeType === "common"}
+                        onChange={(e) => setOfficeTimeType(e.target.value)}
+                    />
+                    Common
+                </label>
+                <label htmlFor="office-time-2">
+                    <input
+                        type="radio"
+                        name="office-time"
+                        id="office-time-2"
+                        value="custom"
+                        checked={officeTimeType === "custom"}
+                        onChange={(e) => setOfficeTimeType(e.target.value)}
+                    />
+                    Custom
+                </label>
+            </div>
+
+            {officeTimeType === "common" && (
+                <>
+                    <input
+                        type="time"
+                        data-key="common"
+                        data-when="starts"
+                        onChange={handleOfficeTime}
+                    />
                     <span> - </span>
+                    <input
+                        type="time"
+                        data-key="common"
+                        data-when="ends"
+                        onChange={handleOfficeTime}
+                    />
+                </>
+            )}
 
-                    <select name="office-hour" id="office-hour">
-                        <option value="">12 AM</option>
-                        <option value="">1 AM</option>
-                        <option value="">2 AM</option>
-                        <option value="">3 AM</option>
-                        <option value="">4 AM</option>
-                        <option value="">5 AM</option>
-                        <option value="">6 AM</option>
-                        <option value="">7 AM</option>
-                        <option value="">8 AM</option>
-                        <option value="">9 AM</option>
-                        <option value="">10 AM</option>
-                        <option value="">11 AM</option>
-                        <option value="">12 PM</option>
-                        <option value="">1 PM</option>
-                        <option value="">2 PM</option>
-                        <option value="">3 PM</option>
-                        <option value="">4 PM</option>
-                        <option value="">5 PM</option>
-                        <option value="">6 PM</option>
-                        <option value="">7 PM</option>
-                        <option value="">8 PM</option>
-                        <option value="">9 PM</option>
-                        <option value="">10 PM</option>
-                        <option value="">11 PM</option>
-                    </select>
-                    <select name="office-minute" id="office-minute">
-                        <option value="">00:00</option>
-                        <option value="">01:00</option>
-                        <option value="">02:00</option>
-                        <option value="">03:00</option>
-                        <option value="">04:00</option>
-                        <option value="">05:00</option>
-                        <option value="">06:00</option>
-                        <option value="">07:00</option>
-                        <option value="">08:00</option>
-                        <option value="">09:00</option>
-                        <option value="">10:00</option>
-                        <option value="">11:00</option>
-                        <option value="">12:00</option>
-                        <option value="">13:00</option>
-                        <option value="">14:00</option>
-                        <option value="">15:00</option>
-                        <option value="">16:00</option>
-                        <option value="">17:00</option>
-                        <option value="">18:00</option>
-                        <option value="">19:00</option>
-                        <option value="">20:00</option>
-                        <option value="">21:00</option>
-                        <option value="">22:00</option>
-                        <option value="">23:00</option>
-                        <option value="">24:00</option>
-                        <option value="">25:00</option>
-                        <option value="">26:00</option>
-                        <option value="">27:00</option>
-                        <option value="">28:00</option>
-                        <option value="">29:00</option>
-                        <option value="">30:00</option>
-                        <option value="">31:00</option>
-                        <option value="">32:00</option>
-                        <option value="">33:00</option>
-                        <option value="">34:00</option>
-                        <option value="">35:00</option>
-                        <option value="">36:00</option>
-                        <option value="">37:00</option>
-                        <option value="">38:00</option>
-                        <option value="">39:00</option>
-                        <option value="">40:00</option>
-                        <option value="">41:00</option>
-                        <option value="">42:00</option>
-                        <option value="">43:00</option>
-                        <option value="">44:00</option>
-                        <option value="">45:00</option>
-                        <option value="">46:00</option>
-                        <option value="">47:00</option>
-                        <option value="">48:00</option>
-                        <option value="">49:00</option>
-                        <option value="">50:00</option>
-                        <option value="">51:00</option>
-                        <option value="">52:00</option>
-                        <option value="">53:00</option>
-                        <option value="">54:00</option>
-                        <option value="">55:00</option>
-                        <option value="">56:00</option>
-                        <option value="">57:00</option>
-                        <option value="">58:00</option>
-                        <option value="">59:00</option>
-                        <option value="">60:00</option>
-                    </select>
-                </div>
-            ))}
+            {officeTimeType === "custom" &&
+                weekDays.map((each, index) => (
+                    <div key={index}>
+                        <label htmlFor="day">{each.name}</label>
+
+                        <input
+                            type="time"
+                            data-key={each.key}
+                            data-when="starts"
+                            onChange={handleOfficeTime}
+                        />
+                        <span> - </span>
+                        <input
+                            type="time"
+                            data-key={each.key}
+                            data-when="ends"
+                            onChange={handleOfficeTime}
+                        />
+                    </div>
+                ))}
 
             <div>
                 <h3>Leave Balance</h3>
@@ -328,9 +290,7 @@ export default function UserCreatePage() {
                             value={leaveDetails}
                             onChange={(e) => setLeaveDetails(e.target.value)}
                         >
-                            <option value={''}>
-                                Select One
-                            </option>
+                            <option value={""}>Select One</option>
                             <option value="Casual: 10, Sick: 14, Annual: 15, Holiday: 11">
                                 General 1
                             </option>
@@ -348,32 +308,47 @@ export default function UserCreatePage() {
                     <>
                         <div>
                             <label htmlFor="casual-leave">Casual Leave</label>
-                            <input type="number" />
+                            <input
+                                type="number"
+                                name={process.env.REACT_APP_LEAVE_CASUAL}
+                                onChange={handleLeave}
+                            />
                         </div>
 
                         <div>
                             <label htmlFor="sick-leave">Sick Leave</label>
-                            <input type="number" />
+                            <input 
+                                type="number"
+                                name={process.env.REACT_APP_LEAVE_SICK} 
+                                onChange={handleLeave}
+                            />
                         </div>
 
                         <div>
                             <label htmlFor="annual-leave">Annual Leave</label>
-                            <input type="number" />
+                            <input 
+                                type="number" 
+                                name={process.env.REACT_APP_LEAVE_ANNUAL}
+                                onChange={handleLeave}
+                            />
                         </div>
 
                         <div>
                             <label htmlFor="holiday">Govt. Holiday</label>
-                            <input type="number" />
+                            <input 
+                                type="number" 
+                                name={process.env.REACT_APP_LEAVE_HOLIDAY}
+                                onChange={handleLeave}
+                            />
                         </div>
                     </>
                 )}
 
-                {leaveDetails !== ''
-                &&
-                (<div>
-                    <span>{ leaveDetails }</span>
-                </div>)
-                }
+                {leaveDetails !== "" && (
+                    <div>
+                        <span>{leaveDetails}</span>
+                    </div>
+                )}
             </div>
 
             <div>
