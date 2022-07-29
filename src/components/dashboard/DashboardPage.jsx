@@ -7,7 +7,6 @@ export default function DashboardPage() {
 
     return (
         <>
-            <Navbar />
             <ToastContainer
                 position="top-center"
                 autoClose={5000}
@@ -19,6 +18,8 @@ export default function DashboardPage() {
                 draggable
                 pauseOnHover
             />
+            
+            <Navbar />
             <div>Dashboard</div>
         </>
     );

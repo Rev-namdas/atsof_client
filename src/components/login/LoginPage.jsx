@@ -38,6 +38,7 @@ export default function LoginPage() {
 				draggable: true,
 				progress: undefined,
 			});
+            setDisableBtn(false)
 		}
 
         if (login_res.data.flag === "SUCCESS") {
@@ -82,7 +83,7 @@ export default function LoginPage() {
     return (
         <div className="login_wrapper">
 			<ToastContainer
-                position="top-center"
+                position="bottom-center"
                 autoClose={5000}
                 hideProgressBar={false}
                 newestOnTop={false}

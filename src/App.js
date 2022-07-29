@@ -1,8 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import AttendancesPage from "./components/attendances/AttendancesPage";
+import UserCreatePage from "./components/create-employee/UserCreatePage";
 import DashboardPage from "./components/dashboard/DashboardPage";
+import EmployeeListPage from "./components/employee-list/EmployeeListPage";
 import LoginPage from "./components/login/LoginPage";
-import UserCreatePage from "./components/login/UserCreatePage";
+import LeaveApplyPage from "./components/leave/LeaveApplyPage"
 
 function App() {
   return (
@@ -11,7 +13,9 @@ function App() {
         <Route exact path="/" element={<LoginPage />} />
         <Route exact path="/dashboard" element={<DashboardPage />} />
         <Route exact path="/user/create" element={<UserCreatePage />} />
+        <Route exact path="/user/list" element={<EmployeeListPage />} />
         <Route exact path="/user/attendances" element={<AttendancesPage />} />
+        <Route exact path="/user/leave/apply" element={<LeaveApplyPage />} />
       </Routes>
     </Router>
   );

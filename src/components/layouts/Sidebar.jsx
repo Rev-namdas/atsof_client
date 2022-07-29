@@ -10,6 +10,8 @@ import {
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import HomeIcon from "@mui/icons-material/Home";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import React, { useEffect, useState } from "react";
@@ -50,6 +52,16 @@ export default function Sidebar({ toggleDrawer }) {
                             name: "Create Employee",
                             icon: <PersonAddAlt1Icon />,
                             link: "/user/create",
+                        },
+                        {
+                            name: "Employees",
+                            icon: <PeopleAltIcon />,
+                            link: "/user/list",
+                        },
+                        {
+                            name: "Leave Apply",
+                            icon: <BookmarkAddIcon />,
+                            link: "/user/leave/apply",
                         },
                     ].map((each, index) => (
                         <ListItem
@@ -99,7 +111,12 @@ export default function Sidebar({ toggleDrawer }) {
                             name: "Attendances",
                             icon: <FormatListBulletedIcon />,
                             link: "/user/attendances",
-                        }
+                        },
+                        {
+                            name: "Leave Apply",
+                            icon: <BookmarkAddIcon />,
+                            link: "/user/leave/apply",
+                        },
                     ].map((each, index) => (
                         <ListItem
                             key={index}
@@ -141,10 +158,8 @@ export default function Sidebar({ toggleDrawer }) {
             onClick={toggleDrawer(false)}
             onKeyDown={toggleDrawer(false)}
         >
-            {userRole.includes(
-                parseInt(process.env.REACT_APP_ROLE_SUPER_ADMIN) ||
-                    parseInt(process.env.REACT_APP_ROLE_ADMIN)
-            ) ? (
+            {(userRole.includes(parseInt(process.env.REACT_APP_ROLE_SUPER_ADMIN))
+            || userRole.includes(parseInt(process.env.REACT_APP_ROLE_ADMIN))) ? (
                 <AdminSidebar />
             ) : (
                 <UserSidebar />
