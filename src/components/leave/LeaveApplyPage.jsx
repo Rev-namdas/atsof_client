@@ -19,6 +19,7 @@ export default function LeaveApplyPage() {
       const date = new Date(e.target.value)
       setLeaveDay(date.getDay())
       setLeaveDate(DateToUnix(date))
+      console.log(DateToUnix(date))
     };
 
     const handleLeaveType = (e) => {
