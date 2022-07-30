@@ -34,6 +34,7 @@ export default function LeaveApplyPage() {
 
       const payload = {
         user_id: user.user_id,
+        name: user.username,
         day: leaveDay,
         date: leaveDate,
         reason: leaveReason.trim(),

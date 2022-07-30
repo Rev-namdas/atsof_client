@@ -8,5 +8,7 @@ export const APIENDPOINTS = {
 	save_logout: api_url + "/attendance/logout-time/save",
 	attendance_list: api_url + "/attendance/list",
 	change_account_status: api_url + "/account/change-account-status",
-	leave_apply: api_url + "/user/leave/apply"
+	leave_apply: api_url + "/user/leave/apply",
+	all_leave_list: api_url + "/user/leave/list/all",
+	leave_approve: api_url + "/user/leave/approve"
 }

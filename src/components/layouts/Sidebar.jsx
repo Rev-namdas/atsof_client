@@ -11,6 +11,7 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import FactCheckIcon from '@mui/icons-material/FactCheck';
 import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import HomeIcon from "@mui/icons-material/Home";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
@@ -57,6 +58,11 @@ export default function Sidebar({ toggleDrawer }) {
                             name: "Employees",
                             icon: <PeopleAltIcon />,
                             link: "/user/list",
+                        },
+                        {
+                            name: "Leave Approval List",
+                            icon: <FactCheckIcon />,
+                            link: "/user/all-leave-list",
                         },
                         {
                             name: "Leave Apply",
