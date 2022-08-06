@@ -4,22 +4,52 @@ import DateToUnix from "../../helpers/DateToUnix";
 import Navbar from "../layouts/Navbar";
 import * as api from "../../api/AdminApi"
 import { toast, ToastContainer } from "react-toastify";
+import moment from "moment"
 
 const cookies = new Cookies();
 
 export default function LeaveApplyPage() {
     const user = cookies.get("udata");
 
-    const [leaveDate, setLeaveDate] = useState(null);
+    const [leaveStartDate, setLeaveStartDate] = useState(null);
+    const [leaveEndDate, setLeaveEndDate] = useState(null)
     const [leaveDay, setLeaveDay] = useState(null)
     const [leaveType, setLeaveType] = useState(null);
     const [leaveReason, setLeaveReason] = useState("");
 
+    const findDatesByStartEndDates = (from_date, to_date) => {
+      const startDate = moment(from_date * 1000)
+      const endDate = moment(to_date * 1000)
+      const leave_day_count = endDate.diff(startDate, 'days')
+
+      let dates = [{ day: startDate.day(), date: startDate.unix() }]
+
+      for(let i=0; i<leave_day_count; i++){
+        const nextDate = startDate.add(1, 'days')
+        
+        dates.push({
+          day: nextDate.day(),
+          date: nextDate.unix()
+        })
+      }
+
+      return dates
+    }
+
     const handleDate = (e) => {
-      const date = new Date(e.target.value)
-      setLeaveDay(date.getDay())
-      setLeaveDate(DateToUnix(date))
-      console.log(DateToUnix(date))
+      if(e.target.name === 'from_date'){
+        const date = new Date(e.target.value)
+
+        setLeaveStartDate(DateToUnix(date))
+      } else if(e.target.name === 'to_date'){
+        const date = new Date(e.target.value)
+
+        setLeaveEndDate(DateToUnix(date))
+      } 
+
+      // const date = new Date(e.target.value)
+      // setLeaveDay(date.getDay())
+      // setLeaveStartDate(DateToUnix(date))
     };
 
     const handleLeaveType = (e) => {
@@ -37,36 +67,40 @@ export default function LeaveApplyPage() {
         user_id: user.user_id,
         name: user.username,
         day: leaveDay,
-        date: leaveDate,
+        from_date: leaveStartDate,
+        to_date: leaveEndDate,
+        dates: findDatesByStartEndDates(leaveStartDate, leaveEndDate),
         reason: leaveReason.trim(),
         leave_id: leaveType
       }
 
-      const res = await api.leaveApply(payload)
+      console.log(payload);
 
-      if(res.data.flag === 'SUCCESS'){
-        toast.dismiss()
-				toast.success(res.data.message, {
-					position: "top-center",
-					autoClose: 2000,
-					hideProgressBar: false,
-					closeOnClick: true,
-					pauseOnHover: true,
-					draggable: true,
-					progress: undefined,
-				});
-      } else if(res.data.flag === 'FAIL'){
-        toast.dismiss()
-				toast.error(res.data.message, {
-					position: "top-center",
-					autoClose: 2000,
-					hideProgressBar: false,
-					closeOnClick: true,
-					pauseOnHover: true,
-					draggable: true,
-					progress: undefined,
-				});
-      }
+      // const res = await api.leaveApply(payload)
+
+      // if(res.data.flag === 'SUCCESS'){
+      //   toast.dismiss()
+			// 	toast.success(res.data.message, {
+			// 		position: "top-center",
+			// 		autoClose: 2000,
+			// 		hideProgressBar: false,
+			// 		closeOnClick: true,
+			// 		pauseOnHover: true,
+			// 		draggable: true,
+			// 		progress: undefined,
+			// 	});
+      // } else if(res.data.flag === 'FAIL'){
+      //   toast.dismiss()
+			// 	toast.error(res.data.message, {
+			// 		position: "top-center",
+			// 		autoClose: 2000,
+			// 		hideProgressBar: false,
+			// 		closeOnClick: true,
+			// 		pauseOnHover: true,
+			// 		draggable: true,
+			// 		progress: undefined,
+			// 	});
+      // }
     }
 
     return (
@@ -86,10 +120,18 @@ export default function LeaveApplyPage() {
             <Navbar />
             <div>LeaveApplyPage</div>
             <div>
-                <label htmlFor="date">Date</label>
+                <label htmlFor="date">From Date</label>
                 <input
                     type="date"
-                    name="date"
+                    name="from_date"
+                    id="date"
+                    onChange={handleDate}
+                />
+
+                <label htmlFor="date">To Date</label>
+                <input
+                    type="date"
+                    name="to_date"
                     id="date"
                     onChange={handleDate}
                 />
