@@ -13,7 +13,6 @@ export default function LeaveApplyPage() {
 
     const [leaveStartDate, setLeaveStartDate] = useState(null);
     const [leaveEndDate, setLeaveEndDate] = useState(null)
-    const [leaveDay, setLeaveDay] = useState(null)
     const [leaveType, setLeaveType] = useState(null);
     const [leaveReason, setLeaveReason] = useState("");
 
@@ -45,11 +44,7 @@ export default function LeaveApplyPage() {
         const date = new Date(e.target.value)
 
         setLeaveEndDate(DateToUnix(date))
-      } 
-
-      // const date = new Date(e.target.value)
-      // setLeaveDay(date.getDay())
-      // setLeaveStartDate(DateToUnix(date))
+      }
     };
 
     const handleLeaveType = (e) => {
@@ -66,7 +61,6 @@ export default function LeaveApplyPage() {
       const payload = {
         user_id: user.user_id,
         name: user.username,
-        day: leaveDay,
         from_date: leaveStartDate,
         to_date: leaveEndDate,
         dates: findDatesByStartEndDates(leaveStartDate, leaveEndDate),
