@@ -6,14 +6,13 @@ import "./login.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Cookies from "universal-cookie"
+import moment from "moment";
 
 const cookies = new Cookies()
 
 export default function LoginPage() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-	//eslint-disable-next-line
-    const [message, setMessage] = useState("");
     const [disableBtn, setDisableBtn] = useState(false)
     const navigate = useNavigate();
 
@@ -28,8 +27,10 @@ export default function LoginPage() {
         const login_res = await api.login(payload);
 
         if(login_res.data.flag === 'FAIL'){
+            setDisableBtn(false)
+
             toast.dismiss()
-			toast.error(login_res.data.message, {
+			return toast.error(login_res.data.message, {
 				position: "top-center",
 				autoClose: 5000,
 				hideProgressBar: false,
@@ -38,16 +39,15 @@ export default function LoginPage() {
 				draggable: true,
 				progress: undefined,
 			});
-            setDisableBtn(false)
 		}
 
         if (login_res.data.flag === "SUCCESS") {
             const today = new Date();
             const payload = {
                 user_id: login_res.data.user_id,
-                month: today.getMonth() + 1,
+                month: moment().format("M"),
                 date: DateToUnix(today),
-                login_time: today.toLocaleTimeString(),
+                login_time: moment().format("hh:mm:ss A"),
             };
 
 			cookies.set('udata', {...login_res.data, date: payload.date});
@@ -67,13 +67,7 @@ export default function LoginPage() {
 				});
 
 				setTimeout(() => {
-					navigate("/dashboard", {
-						state: {
-							user_id: login_res.data.user_id,
-							login_date: res.data.login_date,
-							login_message: payload.login_time,
-						},
-					});
+					navigate("/dashboard");
                     setDisableBtn(false)
 				}, 2000);
 			}
@@ -107,7 +101,6 @@ export default function LoginPage() {
                     onChange={(e) => setPassword(e.target.value)}
                 />
                 <button disabled={disableBtn} onClick={handleSubmit}>Login</button>
-                <div>{message}</div>
             </form>
         </div>
     );

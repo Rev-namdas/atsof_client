@@ -7,15 +7,22 @@ import { toast, ToastContainer } from "react-toastify";
 export default function AllLeaveListPage() {
     const [leaveList, setLeaveList] = useState([]);
 
+    const leaveTypes = {
+        171: "Casual Leave",
+        181: "Sick Leave",
+        151: "Annual Leave",
+        161: "Holiday"
+    }
+
     const fetchData = async () => {
         const res = await api.AllLeaveList({ client_roles: [369] });
 
         let list = [];
         for (let eachLeave of res.data.leaves) {
-            // list.push(...eachLeave.pending_leaves)
-            let leaves = eachLeave.pending_leaves.map((each) => ({
+            let leaves = eachLeave.leave_dates.map((each) => ({
                 ...each,
-                user_id: eachLeave.user_id
+                user_id: eachLeave.user_id,
+                name: eachLeave.username
             }));
             list.push(...leaves);
         }
@@ -87,7 +94,7 @@ export default function AllLeaveListPage() {
             {leaveList &&
                 leaveList.map((each, index) => (
                     <div key={index}>
-                        {each.name} - {UnixToDate(each.date)} - {each.leave_id} -{" "}
+                        {each.name} - {UnixToDate(each.from_date)} - {UnixToDate(each.to_date)} - {leaveTypes[each.leave_id]} -{" "}
                         {each.reason} -{" "}
 						<button onClick={(e) => handleApprove(e, each.user_id, each.date)}>Approve</button>
                     </div>

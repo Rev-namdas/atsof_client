@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { useState } from "react";
 import Cookies from "universal-cookie";
 import DateToUnix from "../../helpers/DateToUnix";
@@ -15,6 +17,7 @@ export default function LeaveApplyPage() {
     const [leaveEndDate, setLeaveEndDate] = useState(null)
     const [leaveType, setLeaveType] = useState(null);
     const [leaveReason, setLeaveReason] = useState("");
+    const [leaveCount, setLeaveCount] = useState(0)
 
     const findDatesByStartEndDates = (from_date, to_date) => {
       const startDate = moment(from_date * 1000)
@@ -31,6 +34,8 @@ export default function LeaveApplyPage() {
           date: nextDate.unix()
         })
       }
+
+      setLeaveCount(dates.length)
 
       return dates
     }
@@ -60,41 +65,39 @@ export default function LeaveApplyPage() {
 
       const payload = {
         user_id: user.user_id,
-        name: user.username,
         from_date: leaveStartDate,
         to_date: leaveEndDate,
-        dates: findDatesByStartEndDates(leaveStartDate, leaveEndDate),
-        reason: leaveReason.trim(),
-        leave_id: leaveType
+        taken_dates: findDatesByStartEndDates(leaveStartDate, leaveEndDate),
+        leave_count: leaveCount,
+        leave_id: leaveType,
+        reason: leaveReason.trim()
       }
 
-      console.log(payload);
+      const res = await api.leaveApply(payload)
 
-      // const res = await api.leaveApply(payload)
-
-      // if(res.data.flag === 'SUCCESS'){
-      //   toast.dismiss()
-			// 	toast.success(res.data.message, {
-			// 		position: "top-center",
-			// 		autoClose: 2000,
-			// 		hideProgressBar: false,
-			// 		closeOnClick: true,
-			// 		pauseOnHover: true,
-			// 		draggable: true,
-			// 		progress: undefined,
-			// 	});
-      // } else if(res.data.flag === 'FAIL'){
-      //   toast.dismiss()
-			// 	toast.error(res.data.message, {
-			// 		position: "top-center",
-			// 		autoClose: 2000,
-			// 		hideProgressBar: false,
-			// 		closeOnClick: true,
-			// 		pauseOnHover: true,
-			// 		draggable: true,
-			// 		progress: undefined,
-			// 	});
-      // }
+      if(res.data.flag === 'SUCCESS'){
+        toast.dismiss()
+				toast.success(res.data.message, {
+					position: "top-center",
+					autoClose: 2000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+				});
+      } else if(res.data.flag === 'FAIL'){
+        toast.dismiss()
+				toast.error(res.data.message, {
+					position: "top-center",
+					autoClose: 2000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+				});
+      }
     }
 
     return (
