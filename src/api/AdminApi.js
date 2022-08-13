@@ -16,7 +16,9 @@ export const changeAccountStatus = (payload) =>
     axios.post(APIENDPOINTS.change_account_status, payload);
 export const leaveApply = (payload) =>
     axios.post(APIENDPOINTS.leave_apply, payload);
-export const AllLeaveList = (client_roles) =>
+export const allLeaveList = (client_roles) =>
     axios.post(APIENDPOINTS.all_leave_list, client_roles);
-export const ApproveLeave = (payload) =>
+export const approveLeave = (payload) =>
     axios.post(APIENDPOINTS.leave_approve, payload);
+export const leaveStatus = (id) =>
+    axios.get(APIENDPOINTS.leave_status + `/${id}`);

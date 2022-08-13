@@ -13,6 +13,7 @@ import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import FactCheckIcon from '@mui/icons-material/FactCheck';
 import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
+import IsoIcon from '@mui/icons-material/Iso';
 import HomeIcon from "@mui/icons-material/Home";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import React, { useEffect, useState } from "react";
@@ -62,12 +63,17 @@ export default function Sidebar({ toggleDrawer }) {
                         {
                             name: "Leave Approval List",
                             icon: <FactCheckIcon />,
-                            link: "/user/all-leave-list",
+                            link: "/user/leave-approval-list",
                         },
                         {
                             name: "Leave Apply",
                             icon: <BookmarkAddIcon />,
                             link: "/user/leave/apply",
+                        },
+                        {
+                            name: "Leave Status",
+                            icon: <IsoIcon />,
+                            link: "/user/leave-status",
                         },
                     ].map((each, index) => (
                         <ListItem
@@ -122,6 +128,11 @@ export default function Sidebar({ toggleDrawer }) {
                             name: "Leave Apply",
                             icon: <BookmarkAddIcon />,
                             link: "/user/leave/apply",
+                        },
+                        {
+                            name: "Leave Status",
+                            icon: <IsoIcon />,
+                            link: "/user/leave-status",
                         },
                     ].map((each, index) => (
                         <ListItem

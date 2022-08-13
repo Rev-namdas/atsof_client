@@ -17,7 +17,6 @@ export default function LeaveApplyPage() {
     const [leaveEndDate, setLeaveEndDate] = useState(null)
     const [leaveType, setLeaveType] = useState(null);
     const [leaveReason, setLeaveReason] = useState("");
-    const [leaveCount, setLeaveCount] = useState(0)
 
     const findDatesByStartEndDates = (from_date, to_date) => {
       const startDate = moment(from_date * 1000)
@@ -25,6 +24,19 @@ export default function LeaveApplyPage() {
       const leave_day_count = endDate.diff(startDate, 'days')
 
       let dates = [{ day: startDate.day(), date: startDate.unix() }]
+      
+      if(leave_day_count === 0){
+        return dates
+      }
+      
+      if(leave_day_count === 1){
+        dates = [
+          { day: startDate.day(), date: startDate.unix() }, 
+          { day: endDate.day(), date: endDate.unix() }
+        ]
+        
+        return dates
+      }
 
       for(let i=0; i<leave_day_count; i++){
         const nextDate = startDate.add(1, 'days')
@@ -34,8 +46,6 @@ export default function LeaveApplyPage() {
           date: nextDate.unix()
         })
       }
-
-      setLeaveCount(dates.length)
 
       return dates
     }
@@ -68,10 +78,12 @@ export default function LeaveApplyPage() {
         from_date: leaveStartDate,
         to_date: leaveEndDate,
         taken_dates: findDatesByStartEndDates(leaveStartDate, leaveEndDate),
-        leave_count: leaveCount,
+        leave_count: findDatesByStartEndDates(leaveStartDate, leaveEndDate).length,
         leave_id: leaveType,
         reason: leaveReason.trim()
       }
+
+      console.log(payload);
 
       const res = await api.leaveApply(payload)
 

@@ -3,31 +3,15 @@ import Navbar from "../layouts/Navbar";
 import * as api from "../../api/AdminApi";
 import { UnixToDate } from "../../helpers/UnixToDate";
 import { toast, ToastContainer } from "react-toastify";
+import { leaveTypes } from "../../helpers/LeaveTypes";
 
-export default function AllLeaveListPage() {
+export default function LeaveApprovalListPage() {
     const [leaveList, setLeaveList] = useState([]);
 
-    const leaveTypes = {
-        171: "Casual Leave",
-        181: "Sick Leave",
-        151: "Annual Leave",
-        161: "Holiday"
-    }
-
     const fetchData = async () => {
-        const res = await api.AllLeaveList({ client_roles: [369] });
+        const res = await api.allLeaveList({ client_roles: [369] });
 
-        let list = [];
-        for (let eachLeave of res.data.leaves) {
-            let leaves = eachLeave.leave_dates.map((each) => ({
-                ...each,
-                user_id: eachLeave.user_id,
-                name: eachLeave.username
-            }));
-            list.push(...leaves);
-        }
-
-        setLeaveList(list);
+        setLeaveList(res.data.leaves);
     };
 
     useEffect(
@@ -38,16 +22,19 @@ export default function AllLeaveListPage() {
         []
     );
 
-	const handleApprove = async (e, id, date) => {
+	const handleApprove = async (e, obj) => {
 		e.preventDefault()
 
 		const payload = {
-			user_id: id,
-			date: date,
+			user_id: obj.user_id,
+			from_date: obj.from_date,
+			to_date: obj.to_date,
+            leave_count: obj.leave_count,
+            taken_dates: obj.taken_dates,
 			client_roles: [369]
 		}
 
-		const res = await api.ApproveLeave(payload)
+		const res = await api.approveLeave(payload)
 		if(res.data.flag === 'SUCCESS'){
 			toast.dismiss()
 			toast.success(res.data.message, {
@@ -90,15 +77,16 @@ export default function AllLeaveListPage() {
             />
 
             <Navbar />
-            <div>AllLeaveListPage</div>
+            <div>LeaveApprovalListPage</div>
             {leaveList &&
                 leaveList.map((each, index) => (
                     <div key={index}>
                         {each.name} - {UnixToDate(each.from_date)} - {UnixToDate(each.to_date)} - {leaveTypes[each.leave_id]} -{" "}
                         {each.reason} -{" "}
-						<button onClick={(e) => handleApprove(e, each.user_id, each.date)}>Approve</button>
+						<button onClick={(e) => handleApprove(e, each)}>Approve</button>
                     </div>
-                ))}
+                ))
+            }
         </>
     );
 }

@@ -18,7 +18,7 @@ export default function DashboardPage() {
                 draggable
                 pauseOnHover
             />
-            
+
             <Navbar />
             <div>Dashboard</div>
         </>
