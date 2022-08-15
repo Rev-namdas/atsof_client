@@ -1,22 +1,28 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../layouts/Navbar";
 import * as api from "../../api/AdminApi";
 import { UnixToDate } from "../../helpers/UnixToDate";
 import { toast, ToastContainer } from "react-toastify";
 import { leaveTypes } from "../../helpers/LeaveTypes";
+import { COOKIE_KEY, getCookie } from "../../helpers/CookieStorage";
 
 export default function LeaveApprovalListPage() {
     const [leaveList, setLeaveList] = useState([]);
+    const [userRole, setUserRole] = useState([])
 
-    const fetchData = async () => {
-        const res = await api.allLeaveList({ client_roles: [369] });
+    const fetchData = async (role) => {
+        const payload = {
+            client_roles: role
+        }
+        const res = await api.allLeaveList(payload);
 
-        setLeaveList(res.data.leaves);
+        setLeaveList(res.data.leaves || []);
     };
 
     useEffect(
         () => {
-            fetchData();
+            const user = getCookie(COOKIE_KEY.USER_DATA)
+            fetchData(user.role);
+            setUserRole(user.role)
         },
         //eslint-disable-next-line
         []
@@ -31,7 +37,7 @@ export default function LeaveApprovalListPage() {
 			to_date: obj.to_date,
             leave_count: obj.leave_count,
             taken_dates: obj.taken_dates,
-			client_roles: [369]
+			client_roles: userRole
 		}
 
 		const res = await api.approveLeave(payload)
@@ -76,16 +82,18 @@ export default function LeaveApprovalListPage() {
               pauseOnHover
             />
 
-            <Navbar />
             <div>LeaveApprovalListPage</div>
-            {leaveList &&
-                leaveList.map((each, index) => (
-                    <div key={index}>
-                        {each.name} - {UnixToDate(each.from_date)} - {UnixToDate(each.to_date)} - {leaveTypes[each.leave_id]} -{" "}
-                        {each.reason} -{" "}
-						<button onClick={(e) => handleApprove(e, each)}>Approve</button>
-                    </div>
-                ))
+            {leaveList.length === 0
+                ? <span>No Record Found</span>
+                : (
+                    leaveList.map((each, index) => (
+                        <div key={index}>
+                            {each.name} - {UnixToDate(each.from_date)} - {UnixToDate(each.to_date)} - {leaveTypes[each.leave_id]} -{" "}
+                            {each.reason} -{" "}
+                            <button onClick={(e) => handleApprove(e, each)}>Approve</button>
+                        </div>
+                    ))
+                )
             }
         </>
     );

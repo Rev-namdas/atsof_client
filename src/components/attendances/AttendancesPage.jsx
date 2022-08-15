@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from "react";
 import * as api from "../../api//AdminApi";
-import Cookies from "universal-cookie";
 import { HumanMonth } from "../../helpers/HumanMonth";
 import { UnixToDate } from "../../helpers/UnixToDate";
-import Navbar from "../layouts/Navbar";
-
-const cookies = new Cookies();
+import { COOKIE_KEY, getCookie } from "../../helpers/CookieStorage";
 
 export default function AttendancesPage() {
     const [userDetails, setUserDetails] = useState([]);
 
     const fetchAttendances = async () => {
-        const udata = cookies.get("udata");
+        const udata = getCookie(COOKIE_KEY.USER_DATA)
         const res = await api.fetchAttendanceList(udata.user_id);
         setUserDetails(res.data);
     };
@@ -25,8 +22,6 @@ export default function AttendancesPage() {
     );
     return (
         <>
-			<Navbar />
-
             <div>
                 <span>Month</span>
                 <span> - </span>

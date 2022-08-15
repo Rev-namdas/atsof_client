@@ -11,14 +11,12 @@ import Menu from "@mui/material/Menu";
 import Drawer from "@mui/material/Drawer";
 import * as api from "../../api//AdminApi";
 import { useNavigate } from "react-router-dom";
-import Cookies from "universal-cookie";
 import { useEffect } from "react";
 import { useState } from "react";
 import Sidebar from "./Sidebar";
+import { COOKIE_KEY, getCookie, removeCookie } from "../../helpers/CookieStorage";
 
-const cookies = new Cookies();
-
-export default function Navbar() {
+export default function Navbar(props) {
     const [anchorEl, setAnchorEl] = useState(null);
     const [username, setUsername] = useState("");
     const [state, setState] = useState(false);
@@ -46,7 +44,7 @@ export default function Navbar() {
     const handleLogout = async () => {
         setAnchorEl(null);
 
-        const udata = cookies.get("udata");
+        const udata = getCookie(COOKIE_KEY.USER_DATA)
         const today = new Date();
         const payload = {
             user_id: udata.user_id,
@@ -57,14 +55,15 @@ export default function Navbar() {
 
         await api.storeLogout(payload);
 
-        cookies.remove('udata')
+        removeCookie(COOKIE_KEY.USER_DATA)
+        localStorage.removeItem('atsofauth')
 
         navigate("/");
     };
 
     useEffect(
         () => {
-            const udata = cookies.get("udata");
+            const udata = getCookie(COOKIE_KEY.USER_DATA)
             udata?.username && setUsername(udata?.username);
         },
         //eslint-disable-next-line
@@ -73,6 +72,8 @@ export default function Navbar() {
 
     return (
         <>
+        {
+            !!localStorage.getItem('atsofauth') &&
             <Box sx={{ flexGrow: 1 }}>
                 <AppBar position="static">
                     <Toolbar>
@@ -140,6 +141,8 @@ export default function Navbar() {
                     </Toolbar>
                 </AppBar>
             </Box>
+        }
+        {props.children}
         </>
     );
 }

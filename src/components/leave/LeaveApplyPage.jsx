@@ -1,17 +1,12 @@
-/* eslint-disable */
-
 import React, { useState } from "react";
-import Cookies from "universal-cookie";
 import DateToUnix from "../../helpers/DateToUnix";
-import Navbar from "../layouts/Navbar";
 import * as api from "../../api/AdminApi"
 import { toast, ToastContainer } from "react-toastify";
 import moment from "moment"
-
-const cookies = new Cookies();
+import { COOKIE_KEY, getCookie } from "../../helpers/CookieStorage";
 
 export default function LeaveApplyPage() {
-    const user = cookies.get("udata");
+    const user = getCookie(COOKIE_KEY.USER_DATA)
 
     const [leaveStartDate, setLeaveStartDate] = useState(null);
     const [leaveEndDate, setLeaveEndDate] = useState(null)
@@ -126,7 +121,6 @@ export default function LeaveApplyPage() {
               pauseOnHover
             />
 
-            <Navbar />
             <div>LeaveApplyPage</div>
             <div>
                 <label htmlFor="date">From Date</label>

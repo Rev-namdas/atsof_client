@@ -1,23 +1,52 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import * as api from "../../api/AdminApi";
 import DateToUnix from "../../helpers/DateToUnix";
 import "./login.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Cookies from "universal-cookie"
 import moment from "moment";
-
-const cookies = new Cookies()
+import { COOKIE_KEY, setCookie } from "../../helpers/CookieStorage";
 
 export default function LoginPage() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [disableBtn, setDisableBtn] = useState(false)
-    const navigate = useNavigate();
+
+    const error_msg = {
+        username: "Username field required",
+        password: "Password field required"
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (username === "") {
+            toast.dismiss()
+
+			return toast.error(error_msg.username, {
+				position: "top-center",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+			});
+        }
+
+        if (password === "") {
+            toast.dismiss()
+
+			return toast.error(error_msg.password, {
+				position: "top-center",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+			});
+        }
+
         setDisableBtn(true)
 
         const payload = {
@@ -50,7 +79,8 @@ export default function LoginPage() {
                 login_time: moment().format("hh:mm:ss A"),
             };
 
-			cookies.set('udata', {...login_res.data, date: payload.date});
+            setCookie(COOKIE_KEY.USER_DATA, {...login_res.data, date: payload.date})
+            localStorage.setItem('atsofauth', 'AT-SOF-AUTH-CHECK')
 
             const res = await api.storeAttendance(payload);
 
@@ -67,7 +97,7 @@ export default function LoginPage() {
 				});
 
 				setTimeout(() => {
-					navigate("/dashboard");
+                    window.location.href = "/dashboard"
                     setDisableBtn(false)
 				}, 2000);
 			}

@@ -17,10 +17,8 @@ import IsoIcon from '@mui/icons-material/Iso';
 import HomeIcon from "@mui/icons-material/Home";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import React, { useEffect, useState } from "react";
-import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
-
-const cookies = new Cookies();
+import { COOKIE_KEY, getCookie } from "../../helpers/CookieStorage";
 
 export default function Sidebar({ toggleDrawer }) {
     const [userRole, setUserRole] = useState([]);
@@ -28,7 +26,7 @@ export default function Sidebar({ toggleDrawer }) {
 
     useEffect(
         () => {
-            const udata = cookies.get("udata");
+            const udata = getCookie(COOKIE_KEY.USER_DATA)
             setUserRole(udata.role);
         },
         // eslint-disable-next-line

@@ -1,9 +1,8 @@
-/* eslint-disable */
-
 import React, { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import * as api from "../../api/AdminApi";
-import Navbar from "../layouts/Navbar";
+import moment from "moment"
+import { COOKIE_KEY, getCookie } from "../../helpers/CookieStorage";
 
 export default function UserCreatePage() {
     const initialState = Object.freeze({
@@ -207,7 +206,7 @@ export default function UserCreatePage() {
                 ...curState,
                 [parseInt(e.target.dataset.key)]: {
                     ...curState[e.target.dataset.key],
-                    [e.target.dataset.when]: date.toLocaleTimeString(),
+                    [e.target.dataset.when]: moment(date).format("hh:mm A"),
                 },
             }));
         }
@@ -218,7 +217,7 @@ export default function UserCreatePage() {
                     ...curState,
                     [parseInt(each.key)]: {
                         ...curState[each.key],
-                        [e.target.dataset.when]: date.toLocaleTimeString(),
+                        [e.target.dataset.when]: moment(date).format("hh:mm A"),
                     },
                 }));
             }
@@ -245,11 +244,30 @@ export default function UserCreatePage() {
     };
 
     const handleSubmit = async () => {
+        const errors = [null, undefined, ""]
+        if (
+            errors.includes(details.username) ||
+            errors.includes(details.password) ||
+            errors.includes(details.role)
+        ) {
+            toast.dismiss()
+			return toast.error("All fields are required", {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }
+
         setIsDisable(true)
 
+        const user = getCookie(COOKIE_KEY.USER_DATA)
         let dayOff = [];
 
-        Object.keys(workingDays).filter((each) => {
+        Object.keys(workingDays).map((each) => {
             if (workingDays[each] === false) {
                 dayOff.push(parseInt(each));
             }
@@ -261,7 +279,7 @@ export default function UserCreatePage() {
             password: details.password,
             role: [details.role],
             dayoff: dayOff,
-            client_roles: [369],
+            client_roles: user.role,
             office_time: officeTime,
             leaves: leaves,
         };
@@ -309,7 +327,6 @@ export default function UserCreatePage() {
                 pauseOnHover
             />
 
-            <Navbar />
             <div>
                 <h3>User Create Page</h3>
             </div>
