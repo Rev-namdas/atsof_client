@@ -7,7 +7,6 @@ import { COOKIE_KEY, getCookie } from "../../helpers/CookieStorage";
 
 export default function LeaveApprovalListPage() {
     const [leaveList, setLeaveList] = useState([]);
-    const [userRole, setUserRole] = useState([])
 
     const fetchData = async (role) => {
         const payload = {
@@ -22,7 +21,6 @@ export default function LeaveApprovalListPage() {
         () => {
             const user = getCookie(COOKIE_KEY.USER_DATA)
             fetchData(user.role);
-            setUserRole(user.role)
         },
         //eslint-disable-next-line
         []
@@ -31,13 +29,15 @@ export default function LeaveApprovalListPage() {
 	const handleApprove = async (e, obj) => {
 		e.preventDefault()
 
+        const user = getCookie(COOKIE_KEY.USER_DATA)
+        
 		const payload = {
 			user_id: obj.user_id,
 			from_date: obj.from_date,
 			to_date: obj.to_date,
             leave_count: obj.leave_count,
             taken_dates: obj.taken_dates,
-			client_roles: userRole
+			client_roles: user.role
 		}
 
 		const res = await api.approveLeave(payload)
@@ -53,7 +53,47 @@ export default function LeaveApprovalListPage() {
 				progress: undefined,
 			});
 
-			fetchData()
+			fetchData(user.role)
+		} else if (res.data.flag === 'FAIL'){
+			toast.dismiss()
+			toast.error(res.data.message, {
+				position: "top-center",
+				autoClose: 2000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+			});
+		}
+	}
+
+	const handleDecline = async (e, obj) => {
+		e.preventDefault()
+
+        const user = getCookie(COOKIE_KEY.USER_DATA)
+        
+		const payload = {
+			user_id: obj.user_id,
+			from_date: obj.from_date,
+			to_date: obj.to_date,
+            client_roles: user.role
+		}
+
+		const res = await api.declineLeave(payload)
+		if(res.data.flag === 'SUCCESS'){
+			toast.dismiss()
+			toast.success(res.data.message, {
+				position: "top-center",
+				autoClose: 2000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+			});
+
+			fetchData(user.role)
 		} else if (res.data.flag === 'FAIL'){
 			toast.dismiss()
 			toast.error(res.data.message, {
@@ -90,7 +130,8 @@ export default function LeaveApprovalListPage() {
                         <div key={index}>
                             {each.name} - {UnixToDate(each.from_date)} - {UnixToDate(each.to_date)} - {leaveTypes[each.leave_id]} -{" "}
                             {each.reason} -{" "}
-                            <button onClick={(e) => handleApprove(e, each)}>Approve</button>
+                            <button onClick={(e) => handleApprove(e, each)}>Approve</button>{" "}
+                            <button onClick={(e) => handleDecline(e, each)}>Decline</button>
                         </div>
                     ))
                 )
