@@ -16,81 +16,120 @@ const catchMsg = {
 }
 
 
-export const login = (payload) => {  
-    return axios.post(APIENDPOINTS.user_login, payload)
-        .then((res) => res?.data)
-        .catch(() => catchMsg)
+export const login = async (payload) => {  
+    try {
+        const res = await axios.post(APIENDPOINTS.user_login, payload);
+        return res?.data;
+    } catch {
+        return catchMsg;
+    }
 }
 
-export const register = (payload) => {
-    return axios.post(APIENDPOINTS.user_create, payload, config)
-        .then((res) => res?.data)
-        .catch(() => catchMsg)
+export const register = async (payload) => {
+    try {
+        const res = await axios.post(APIENDPOINTS.user_create, payload, config);
+        return res?.data;
+    } catch {
+        return catchMsg;
+    }
 }
 
-export const fetchEmployeeList = () => {
-    return axios.get(APIENDPOINTS.user_list, config)
-        .then((res) => res?.data)
-        .catch(() => catchMsg)
+export const fetchEmployeeList = async () => {
+    try {
+        const res = await axios.get(APIENDPOINTS.user_list, config);
+        return res?.data;
+    } catch {
+        return catchMsg;
+    }
 }
 
-export const changeAccountStatus = (payload) => {
-    return axios.patch(APIENDPOINTS.change_account_status, 
-        payload, config)
-            .then((res) => res?.data)
-            .catch(() => catchMsg)
+export const changeAccountStatus = async (payload) => {
+    try {
+        const res = await axios.patch(APIENDPOINTS.change_account_status,
+            payload, config);
+        return res?.data;
+    } catch {
+        return catchMsg;
+    }
 }
 
-export const storeAttendance = (payload) => {
-    return axios.post(APIENDPOINTS.save_attendance, payload)
-        .then((res) => res?.data)
-        .catch(() => catchMsg)
+export const storeAttendance = async (payload) => {
+    try {
+        const res = await axios.post(APIENDPOINTS.save_attendance, payload);
+        return res?.data;
+    } catch {
+        return catchMsg;
+    }
 }
 
-export const storeLogout = (payload) => {
-    return axios.post(APIENDPOINTS.save_logout, payload)
-        .then((res) => res?.data)
-        .catch(() => catchMsg)
+export const storeLogout = async (payload) => {
+    try {
+        const res = await axios.post(APIENDPOINTS.save_logout, payload);
+        return res?.data;
+    } catch {
+        return catchMsg;
+    }
 }    
 
-export const fetchAttendanceList = () => {
-    return axios.get(APIENDPOINTS.attendance_list, config)
-        .then((res) => res?.data)
-        .catch(() => catchMsg)
+export const fetchAttendanceList = async () => {
+    try {
+        const res = await axios.get(APIENDPOINTS.attendance_list, config);
+        return res?.data;
+    } catch {
+        return catchMsg;
+    }
 }
 
-export const leaveApply = (payload) => {
-    return axios.post(APIENDPOINTS.leave_apply, payload)
-        .then((res) => res?.data)
-        .catch(() => catchMsg)
+export const leaveApply = async (payload) => {
+    try {
+        const res = await axios.post(APIENDPOINTS.leave_apply, payload);
+        return res?.data;
+    } catch {
+        return catchMsg;
+    }
 }
 
-export const pendingLeaveList = () => {
-    return axios.get(APIENDPOINTS.all_leave_list, config)
-        .then((res) => res?.data?.leaves)
-        .catch(() => catchMsg)
+export const pendingLeaveList = async () => {
+    try {
+        const res = await axios.get(APIENDPOINTS.all_leave_list, config);
+        return res?.data?.leaves;
+    } catch {
+        return catchMsg;
+    }
 }
 
-export const approveLeave = (payload) => {
-    return axios.patch(APIENDPOINTS.leave_approve, payload, config)
-        .then((res) => res?.data)
-        .catch(() => catchMsg)
+export const approveLeave = async (payload) => {
+    try {
+        const res = await axios.patch(APIENDPOINTS.leave_approve, payload, config);
+        return res?.data;
+    } catch {
+        return catchMsg;
+    }
 }
 
-export const declineLeave = (payload) => {
-    return axios.patch(APIENDPOINTS.leave_decline, payload, config)
-        .then((res) => res?.data)
-        .catch(() => catchMsg)
+export const declineLeave = async (payload) => {
+    try {
+        const res = await axios.patch(APIENDPOINTS.leave_decline, payload, config);
+        return res?.data;
+    } catch {
+        return catchMsg;
+    }
 }
     
-export const leaveStatus = () => {
-    return axios.get(APIENDPOINTS.leave_status, config)
-        .then((res) => res?.data?.leave_details)
-        .catch(() => catchMsg)
+export const leaveStatus = async () => {
+    try {
+        const res = await axios.get(APIENDPOINTS.leave_status, config);
+        return res?.data?.leave_details;
+    } catch {
+        return catchMsg;
+    }
 }
     
-export const userLates = () => {
-    return axios.get(APIENDPOINTS.user_lates, config)
-        .then((res) => res?.data)
-        .catch(() => catchMsg)
+export const userLates = async () => {
+    try {
+        const res = await axios.get(APIENDPOINTS.user_lates, config);
+        return res?.data;
+    } catch {
+        return catchMsg;
+    }
 }
