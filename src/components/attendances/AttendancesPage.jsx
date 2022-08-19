@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import * as api from "../../api//AdminApi";
+import * as api from "../../api/Api";
 import { HumanMonth } from "../../helpers/HumanMonth";
 import { UnixToDate } from "../../helpers/UnixToDate";
 import { COOKIE_KEY, getCookie } from "../../helpers/CookieStorage";
@@ -10,7 +10,7 @@ export default function AttendancesPage() {
     const fetchAttendances = async () => {
         const udata = getCookie(COOKIE_KEY.USER_DATA)
         const res = await api.fetchAttendanceList(udata.user_id);
-        setUserDetails(res.data);
+        setUserDetails(res);
     };
 
     useEffect(
@@ -33,7 +33,7 @@ export default function AttendancesPage() {
             </div>
             <div>
                 {userDetails?.attendance?.map((each, index) => (
-                    <div key={index}>
+                    <div key={index} style={{ color: `${each.late === 1 && 'red'}` }}>
                         <span>{HumanMonth(each.month)}</span>
                         <span> - </span>
                         <span>{UnixToDate(each.date)}</span>

@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
-import * as api from "../../api/AdminApi";
+import * as api from "../../api/Api";
 import moment from "moment"
-import { COOKIE_KEY, getCookie } from "../../helpers/CookieStorage";
 
 export default function UserCreatePage() {
     const initialState = Object.freeze({
@@ -264,7 +263,6 @@ export default function UserCreatePage() {
 
         setIsDisable(true)
 
-        const user = getCookie(COOKIE_KEY.USER_DATA)
         let dayOff = [];
 
         Object.keys(workingDays).map((each) => {
@@ -279,16 +277,15 @@ export default function UserCreatePage() {
             password: details.password,
             role: [details.role],
             dayoff: dayOff,
-            client_roles: user.role,
             office_time: officeTime,
             leaves: leaves,
         };
 
         const res = await api.register(payload);
         
-        if(res.data.flag === 'SUCCESS'){
+        if(res.flag === 'SUCCESS'){
             toast.dismiss()
-            toast.success(res.data.message, {
+            toast.success(res.message, {
                 position: "top-center",
                 autoClose: 2000,
                 hideProgressBar: false,
@@ -297,9 +294,9 @@ export default function UserCreatePage() {
                 draggable: true,
                 progress: undefined,
             });
-        } else if(res.data.flag === 'FAIL'){
+        } else if(res.flag === 'FAIL'){
             toast.dismiss()
-            toast.error(res.data.message, {
+            toast.error(res.message, {
                 position: "top-center",
                 autoClose: 2000,
                 hideProgressBar: false,

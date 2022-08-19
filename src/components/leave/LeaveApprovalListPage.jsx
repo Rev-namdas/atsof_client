@@ -1,26 +1,21 @@
 import React, { useEffect, useState } from "react";
-import * as api from "../../api/AdminApi";
+import * as api from "../../api/Api";
 import { UnixToDate } from "../../helpers/UnixToDate";
 import { toast, ToastContainer } from "react-toastify";
 import { leaveTypes } from "../../helpers/LeaveTypes";
-import { COOKIE_KEY, getCookie } from "../../helpers/CookieStorage";
 
 export default function LeaveApprovalListPage() {
     const [leaveList, setLeaveList] = useState([]);
 
-    const fetchData = async (role) => {
-        const payload = {
-            client_roles: role
-        }
-        const res = await api.allLeaveList(payload);
+    const fetchData = async () => {
+        const res = await api.pendingLeaveList();
 
-        setLeaveList(res.data.leaves || []);
+        setLeaveList(res || []);
     };
 
     useEffect(
         () => {
-            const user = getCookie(COOKIE_KEY.USER_DATA)
-            fetchData(user.role);
+            fetchData();
         },
         //eslint-disable-next-line
         []
@@ -28,8 +23,6 @@ export default function LeaveApprovalListPage() {
 
 	const handleApprove = async (e, obj) => {
 		e.preventDefault()
-
-        const user = getCookie(COOKIE_KEY.USER_DATA)
         
 		const payload = {
 			user_id: obj.user_id,
@@ -37,13 +30,12 @@ export default function LeaveApprovalListPage() {
 			to_date: obj.to_date,
             leave_count: obj.leave_count,
             taken_dates: obj.taken_dates,
-			client_roles: user.role
 		}
 
 		const res = await api.approveLeave(payload)
-		if(res.data.flag === 'SUCCESS'){
+		if(res.flag === 'SUCCESS'){
 			toast.dismiss()
-			toast.success(res.data.message, {
+			toast.success(res.message, {
 				position: "top-center",
 				autoClose: 2000,
 				hideProgressBar: false,
@@ -53,10 +45,10 @@ export default function LeaveApprovalListPage() {
 				progress: undefined,
 			});
 
-			fetchData(user.role)
-		} else if (res.data.flag === 'FAIL'){
+			fetchData()
+		} else if (res.flag === 'FAIL'){
 			toast.dismiss()
-			toast.error(res.data.message, {
+			toast.error(res.message, {
 				position: "top-center",
 				autoClose: 2000,
 				hideProgressBar: false,
@@ -70,20 +62,17 @@ export default function LeaveApprovalListPage() {
 
 	const handleDecline = async (e, obj) => {
 		e.preventDefault()
-
-        const user = getCookie(COOKIE_KEY.USER_DATA)
         
 		const payload = {
 			user_id: obj.user_id,
 			from_date: obj.from_date,
 			to_date: obj.to_date,
-            client_roles: user.role
 		}
 
 		const res = await api.declineLeave(payload)
-		if(res.data.flag === 'SUCCESS'){
+		if(res.flag === 'SUCCESS'){
 			toast.dismiss()
-			toast.success(res.data.message, {
+			toast.success(res.message, {
 				position: "top-center",
 				autoClose: 2000,
 				hideProgressBar: false,
@@ -93,10 +82,10 @@ export default function LeaveApprovalListPage() {
 				progress: undefined,
 			});
 
-			fetchData(user.role)
-		} else if (res.data.flag === 'FAIL'){
+			fetchData()
+		} else if (res.flag === 'FAIL'){
 			toast.dismiss()
-			toast.error(res.data.message, {
+			toast.error(res.message, {
 				position: "top-center",
 				autoClose: 2000,
 				hideProgressBar: false,

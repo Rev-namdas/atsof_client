@@ -1,24 +1,18 @@
 import React, { useEffect, useState } from "react";
-import * as api from "../../api/AdminApi";
+import * as api from "../../api/Api";
 import { toast, ToastContainer } from "react-toastify";
-import { COOKIE_KEY, getCookie } from "../../helpers/CookieStorage";
 
 export default function EmployeeListPage() {
-    const [employee, setEmployee] = useState([]);
-    const [userRole, setUserRole] = useState([])
+    const [employee, setEmployee] = useState(null);
 
-    const fetchData = async (role) => {
-        const res = await api.fetchEmployeeList({
-            client_roles: role,
-        });
-        setEmployee(res.data);
+    const fetchData = async () => {
+        const res = await api.fetchEmployeeList();
+        setEmployee(res);
     };
 
     useEffect(
         () => {
-            const user = getCookie(COOKIE_KEY.USER_DATA)
-            fetchData(user.role);
-            setUserRole(user.role)
+            fetchData();
         },
         // eslint-disable-next-line
         []
@@ -28,16 +22,15 @@ export default function EmployeeListPage() {
         e.preventDefault();
 
         const payload = {
-            client_roles: userRole,
             user_id: user.user_id,
             account_status: !user.active,
         };
 
         const res = await api.changeAccountStatus(payload);
 
-        if (res.data.flag === "SUCCESS") {
+        if (res.flag === "SUCCESS") {
             toast.dismiss();
-            toast.success(res.data.message, {
+            toast.success(res.message, {
                 position: "top-center",
                 autoClose: 2000,
                 hideProgressBar: false,
@@ -47,10 +40,10 @@ export default function EmployeeListPage() {
                 progress: undefined,
             });
 
-            fetchData(userRole);
-        } else if (res.data.flag === "FAIL") {
+            fetchData();
+        } else if (res.flag === "FAIL") {
             toast.dismiss();
-            toast.error(res.data.message, {
+            toast.error(res.message, {
                 position: "top-center",
                 autoClose: 2000,
                 hideProgressBar: false,
@@ -78,10 +71,16 @@ export default function EmployeeListPage() {
 
             <div>EmployeeListPage</div>
             {
+                employee === null
+                && <div>Loading...</div>
+            }
+
+            {
+                employee !== null &&
                 employee.length === 0
                 ? <span>No Record Found</span>
                 : (
-                    employee.map((each, index) => (
+                    employee?.map((each, index) => (
                         <div key={index}>
                             {each.username} - {each.active ? "TRUE" : "FALSE"} -{" "}
                             <button onClick={(e) => handleAccountStatus(e, each)}>

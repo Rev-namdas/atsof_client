@@ -9,12 +9,13 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import Drawer from "@mui/material/Drawer";
-import * as api from "../../api//AdminApi";
+import * as api from "../../api/Api";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useState } from "react";
 import Sidebar from "./Sidebar";
 import { COOKIE_KEY, getCookie, removeCookie } from "../../helpers/CookieStorage";
+import moment from "moment";
 
 export default function Navbar(props) {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -45,12 +46,12 @@ export default function Navbar(props) {
         setAnchorEl(null);
 
         const udata = getCookie(COOKIE_KEY.USER_DATA)
-        const today = new Date();
+        
         const payload = {
             user_id: udata.user_id,
-            month: today.getMonth() + 1,
+            month: moment().format("M"),
             date: udata.date,
-            logout_time: today.toLocaleTimeString(),
+            logout_time: moment().format("hh:mm:ss A"),
         };
 
         await api.storeLogout(payload);

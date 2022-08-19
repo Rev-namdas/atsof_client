@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import * as api from "../../api/AdminApi";
+import * as api from "../../api/Api";
 import DateToUnix from "../../helpers/DateToUnix";
 import "./login.css";
 import { toast, ToastContainer } from "react-toastify";
@@ -55,11 +55,11 @@ export default function LoginPage() {
         };
         const login_res = await api.login(payload);
 
-        if(login_res.data.flag === 'FAIL'){
+        if(login_res.flag === 'FAIL'){
             setDisableBtn(false)
 
             toast.dismiss()
-			return toast.error(login_res.data.message, {
+			return toast.error(login_res.message, {
 				position: "top-center",
 				autoClose: 5000,
 				hideProgressBar: false,
@@ -70,23 +70,23 @@ export default function LoginPage() {
 			});
 		}
 
-        if (login_res.data.flag === "SUCCESS") {
+        if (login_res.flag === "SUCCESS") {
             const today = new Date();
             const payload = {
-                user_id: login_res.data.user_id,
+                user_id: login_res.user_id,
                 month: moment().format("M"),
                 date: DateToUnix(today),
                 login_time: moment().format("hh:mm:ss A"),
             };
 
-            setCookie(COOKIE_KEY.USER_DATA, {...login_res.data, date: payload.date})
+            setCookie(COOKIE_KEY.USER_DATA, {...login_res, date: payload.date})
             localStorage.setItem('atsofauth', 'AT-SOF-AUTH-CHECK')
 
             const res = await api.storeAttendance(payload);
 
-			if(res.data.flag === 'SUCCESS'){
+			if(res.flag === 'SUCCESS'){
                 toast.dismiss()
-				toast.success(res.data.message, {
+				toast.success(res.message, {
 					position: "top-center",
 					autoClose: 2000,
 					hideProgressBar: false,
