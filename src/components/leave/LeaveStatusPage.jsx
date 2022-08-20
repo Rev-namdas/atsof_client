@@ -22,6 +22,15 @@ export default function LeaveStatusPage() {
 	// eslint-disable-next-line
 	[])
 	
+	const userLeaveStatus = (val) => {
+		if(val === 0){
+			return 'Pending'
+		} else if(val === 1){
+			return 'Approved'
+		} else if(val < 0){
+			return 'Declined'
+		}
+	}
 	
     return (
         <>
@@ -39,7 +48,9 @@ export default function LeaveStatusPage() {
 			<br />
 
 			<div>Leave Summary</div>
-			{appliedLeaves.map((each, index) => (
+			{appliedLeaves
+			.sort((a, b) => a.from_date > b.from_date ? 1 : -1)
+			.map((each, index) => (
 				<div key={index}>
 					<span>{ UnixToDate(each.from_date) }</span>
 					<span> - </span>
@@ -48,6 +59,10 @@ export default function LeaveStatusPage() {
 					<span>{ each.leave_count }</span>
 					<span> - </span>
 					<span>{ leaveTypes[each.leave_id] }</span>
+					<span> - </span>
+					<span>{ each.reason }</span>
+					<span> - </span>
+					<span>{ userLeaveStatus(each.approved) }</span>
 				</div>
 			))}
         </>

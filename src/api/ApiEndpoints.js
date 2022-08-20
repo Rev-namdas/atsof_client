@@ -14,6 +14,7 @@ export const APIENDPOINTS = {
 	leave_apply: api_url + "/user/leave/apply",
 	leave_approve: api_url + "/user/leave/approve",
 	leave_decline: api_url + "/user/leave/decline",
+	leave_recommend: api_url + "/user/leave/recommend",
 	leave_status: api_url + "/user/leave/status",
 	user_lates: api_url + "/attendance/late",
 }

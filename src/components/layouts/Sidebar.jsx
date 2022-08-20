@@ -61,7 +61,18 @@ export default function Sidebar({ toggleDrawer }) {
                         {
                             name: "Leave Approval List",
                             icon: <FactCheckIcon />,
-                            link: "/user/leave-approval-list",
+                            link: `${userRole.includes(
+                                parseInt(
+                                    process.env.REACT_APP_ROLE_SUPER_ADMIN
+                                )) 
+                                ? "/user/leave-approval-list" 
+                                : userRole.includes(
+                                    parseInt(
+                                        process.env.REACT_APP_ROLE_ADMIN
+                                    ))
+                                    ? "/user/leave/list/recommend"
+                                    : ""
+                            }`
                         },
                         {
                             name: "Leave Apply",

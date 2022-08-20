@@ -6,7 +6,7 @@ const user = getCookie(COOKIE_KEY.USER_DATA)
 
 const config = {
     headers: {
-        Authorization: user.auth
+        Authorization: user?.auth
     }
 }
 
@@ -110,6 +110,15 @@ export const approveLeave = async (payload) => {
 export const declineLeave = async (payload) => {
     try {
         const res = await axios.patch(APIENDPOINTS.leave_decline, payload, config);
+        return res?.data;
+    } catch {
+        return catchMsg;
+    }
+}
+
+export const recommendLeave = async (payload) => {
+    try {
+        const res = await axios.patch(APIENDPOINTS.leave_recommend, payload, config);
         return res?.data;
     } catch {
         return catchMsg;

@@ -10,6 +10,7 @@ import EmployeeListPage from "../employee-list/EmployeeListPage";
 import Error404Page from "../error 404/Error404Page";
 import LeaveApplyPage from "../leave/LeaveApplyPage";
 import LeaveApprovalListPage from "../leave/LeaveApprovalListPage";
+import LeaveRecommendPage from "../leave/LeaveRecommendPage";
 import LeaveStatusPage from "../leave/LeaveStatusPage";
 import LoginPage from "../login/LoginPage";
 import Navbar from "./Navbar";
@@ -33,10 +34,15 @@ function Layout() {
             <Route exact path="/user/leave-status" element={<LeaveStatusPage />} />
 
             {/* Check User Role Before Proceed */}
-            <Route element={<CheckRole roles={[UserRoles.SUPER_ADMIN, UserRoles.ADMIN]} />}>
+            <Route element={<CheckRole roles={[UserRoles.SUPER_ADMIN]} />}>
               <Route exact path="/user/create" element={<UserCreatePage />} />
               <Route exact path="/user/leave-approval-list" element={<LeaveApprovalListPage />} />
               <Route exact path="/user/list" element={<EmployeeListPage />} />
+            </Route>
+
+            {/* Check User Role Before Proceed */}
+            <Route element={<CheckRole roles={[UserRoles.ADMIN]} />}>
+              <Route exact path="/user/leave/list/recommend" element={<LeaveRecommendPage />} />
             </Route>
           </Route>
 
