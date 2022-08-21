@@ -4,6 +4,7 @@ export const APIENDPOINTS = {
 	user_login: api_url + "/user/auth/login",
 	user_create: api_url + "/user/auth/register",
 	user_list: api_url + "/account/list",
+	user_lates: api_url + "/attendance/late",
 	change_account_status: api_url + "/account/change-account-status",
 
 	save_attendance: api_url + "/attendance/save",
@@ -16,5 +17,6 @@ export const APIENDPOINTS = {
 	leave_decline: api_url + "/user/leave/decline",
 	leave_recommend: api_url + "/user/leave/recommend",
 	leave_status: api_url + "/user/leave/status",
-	user_lates: api_url + "/attendance/late",
+
+	department_list: api_url + "/settings/department/list"
 }

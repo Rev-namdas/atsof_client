@@ -49,6 +49,11 @@ export default function Sidebar({ toggleDrawer }) {
                             link: "/user/attendances",
                         },
                         {
+                            name: "User Attendances",
+                            icon: <FormatListBulletedIcon />,
+                            link: "/user/attendances/all",
+                        },
+                        {
                             name: "Create Employee",
                             icon: <PersonAddAlt1Icon />,
                             link: "/user/create",

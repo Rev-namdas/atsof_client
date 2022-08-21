@@ -74,13 +74,11 @@ export default function LoginPage() {
             const today = new Date();
             const payload = {
                 user_id: login_res.user_id,
+                department: login_res.department,
                 month: moment().format("M"),
                 date: DateToUnix(today),
                 login_time: moment().format("hh:mm:ss A"),
             };
-
-            setCookie(COOKIE_KEY.USER_DATA, {...login_res, date: payload.date})
-            localStorage.setItem('atsofauth', 'AT-SOF-AUTH-CHECK')
 
             const res = await api.storeAttendance(payload);
 
@@ -95,6 +93,9 @@ export default function LoginPage() {
 					draggable: true,
 					progress: undefined,
 				});
+
+                setCookie(COOKIE_KEY.USER_DATA, {...login_res, date: payload.date})
+                localStorage.setItem('atsofauth', 'AT-SOF-AUTH-CHECK')
 
 				setTimeout(() => {
                     window.location.href = "/dashboard"

@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import UserRoles from "../../helpers/UserRoles";
 import AttendancesPage from "../attendances/AttendancesPage";
+import UserAttendancePage from "../attendances/UserAttendancePage";
 import CheckAlreadyLoggedIn from "../authentication/CheckAlreadyLoggedIn";
 import CheckIsLoggedIn from "../authentication/CheckIsLoggedIn";
 import CheckRole from "../authentication/CheckRole";
@@ -38,6 +39,7 @@ function Layout() {
               <Route exact path="/user/create" element={<UserCreatePage />} />
               <Route exact path="/user/leave-approval-list" element={<LeaveApprovalListPage />} />
               <Route exact path="/user/list" element={<EmployeeListPage />} />
+              <Route exact path="/user/attendances/all" element={<UserAttendancePage />} />
             </Route>
 
             {/* Check User Role Before Proceed */}

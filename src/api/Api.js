@@ -142,3 +142,12 @@ export const userLates = async () => {
         return catchMsg;
     }
 }
+    
+export const departmentList = async () => {
+    try {
+        const res = await axios.get(APIENDPOINTS.department_list, config);
+        return res?.data?.departments;
+    } catch {
+        return catchMsg;
+    }
+}
