@@ -74,7 +74,8 @@ export default function LoginPage() {
             const today = new Date();
             const payload = {
                 user_id: login_res.user_id,
-                department: login_res.department,
+                username: login_res.username,
+                department_id: login_res.department_id,
                 month: moment().format("M"),
                 date: DateToUnix(today),
                 login_time: moment().format("hh:mm:ss A"),

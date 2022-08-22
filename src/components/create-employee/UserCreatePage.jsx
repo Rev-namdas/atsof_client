@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import * as api from "../../api/Api";
-import moment from "moment"
+import moment from "moment";
 
 export default function UserCreatePage() {
     const initialState = Object.freeze({
@@ -86,8 +86,10 @@ export default function UserCreatePage() {
     const [details, setDetails] = useState(initialState);
     const [isDisable, setIsDisable] = useState(false);
     const [workingDays, setWorkingDays] = useState(initialWorkingDays);
-    const [chooseDepartment, setChooseDepartment] = useState("")
-    const [departments, setDepartments] = useState([]);
+    const [departmentList, setDepartmentList] = useState([]);
+    const [chooseDepartment, setChooseDepartment] = useState("");
+    const [selectedDepartment, setSelectedDepartment] = useState(0);
+    const [departmentAccess, setDepartmentAccess] = useState([]);
     // office time type: common & custom
     const [officeTimeType, setOfficeTimeType] = useState("common");
     const [officeTime, setOfficeTime] = useState(initialOfficeTime);
@@ -97,13 +99,13 @@ export default function UserCreatePage() {
     const [leaves, setLeaves] = useState(initialLeave);
 
     const fetchDepartments = async () => {
-        const depts = await api.departmentList()
-        setDepartments(depts);
-    }
+        const depts = await api.departmentList();
+        setDepartmentList(depts);
+    };
 
     useEffect(
         () => {
-            fetchDepartments()
+            fetchDepartments();
 
             setLeavePolicy([
                 {
@@ -200,14 +202,28 @@ export default function UserCreatePage() {
     };
 
     const handleDepartmentChange = (e) => {
-        const chosenDept = departments.find(each => 
-            each.dept_id === parseInt(e.target.value))
-        
+        setSelectedDepartment(parseInt(e.target.value))
+        const chosenDept = departmentList.find(
+            (each) => each.dept_id === parseInt(e.target.value)
+        );
+
         setChooseDepartment({
             id: chosenDept.dept_id,
-            name: chosenDept.dept_name
-        })
-    }
+            name: chosenDept.dept_name,
+        });
+    };
+
+    const handleDepartmentAccess = (e) => {
+        if(e.target.checked){
+            setDepartmentAccess(prev => (
+                [...prev, parseInt(e.target.value)]
+            ))
+        } else {
+            setDepartmentAccess(prev => (
+                prev.filter(each => each !== parseInt(e.target.value))
+            ))
+        }
+    };
 
     const handleLeaveType = (e) => {
         setLeaveType(e.target.value);
@@ -262,14 +278,14 @@ export default function UserCreatePage() {
     };
 
     const handleSubmit = async () => {
-        const errors = [null, undefined, ""]
+        const errors = [null, undefined, ""];
         if (
             errors.includes(details.username) ||
             errors.includes(details.password) ||
             errors.includes(details.role)
         ) {
-            toast.dismiss()
-			return toast.error("All fields are required", {
+            toast.dismiss();
+            return toast.error("All fields are required", {
                 position: "top-center",
                 autoClose: 2000,
                 hideProgressBar: false,
@@ -280,7 +296,7 @@ export default function UserCreatePage() {
             });
         }
 
-        setIsDisable(true)
+        setIsDisable(true);
 
         let dayOff = [];
 
@@ -298,38 +314,37 @@ export default function UserCreatePage() {
             dayoff: dayOff,
             office_time: officeTime,
             leaves: leaves,
-            department: chooseDepartment
+            department: chooseDepartment,
+            dept_access: departmentAccess
         };
 
-        console.log(payload);
+        const res = await api.register(payload);
 
-        // const res = await api.register(payload);
-        
-        // if(res.flag === 'SUCCESS'){
-        //     toast.dismiss()
-        //     toast.success(res.message, {
-        //         position: "top-center",
-        //         autoClose: 2000,
-        //         hideProgressBar: false,
-        //         closeOnClick: true,
-        //         pauseOnHover: true,
-        //         draggable: true,
-        //         progress: undefined,
-        //     });
-        // } else if(res.flag === 'FAIL'){
-        //     toast.dismiss()
-        //     toast.error(res.message, {
-        //         position: "top-center",
-        //         autoClose: 2000,
-        //         hideProgressBar: false,
-        //         closeOnClick: true,
-        //         pauseOnHover: true,
-        //         draggable: true,
-        //         progress: undefined,
-        //     });
-        // }
+        if(res.flag === 'SUCCESS'){
+            toast.dismiss()
+            toast.success(res.message, {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        } else if(res.flag === 'FAIL'){
+            toast.dismiss()
+            toast.error(res.message, {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }
 
-        setIsDisable(false)
+        setIsDisable(false);
     };
 
     return (
@@ -399,14 +414,35 @@ export default function UserCreatePage() {
                 <select
                     name="dept"
                     id="dept"
-                    value={chooseDepartment}
+                    value={selectedDepartment}
                     onChange={handleDepartmentChange}
                 >
                     <option defaultValue="">Select Department</option>
-                    {departments.map((each, index) => (
-                        <option key={index} value={each.dept_id}>{ each.dept_name }</option>
+                    {departmentList.map((each, index) => (
+                        <option key={index} value={each.dept_id}>
+                            {each.dept_name}
+                        </option>
                     ))}
                 </select>
+            </div>
+
+            <div>
+                <h3>Department Access</h3>
+            </div>
+            <div>
+                {departmentList.map((each, index) => (
+                    <span key={index}>
+                        <input
+                            type="checkbox"
+                            name={each.dept_name}
+                            id={each.dept_name}
+                            value={each.dept_id}
+                            onChange={handleDepartmentAccess}
+                        />
+                        <label htmlFor={each.dept_name}>{ each.dept_name }</label>
+                    </span>
+                ))}
+                
             </div>
 
             <div>
@@ -672,8 +708,12 @@ export default function UserCreatePage() {
             </div>
 
             <div>
-                <button disabled={isDisable} onClick={handleSubmit}>Submit</button>
+                <button disabled={isDisable} onClick={handleSubmit}>
+                    Submit
+                </button>
             </div>
+
+            <br /> <br /> <br />
         </>
     );
 }

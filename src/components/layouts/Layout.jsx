@@ -39,6 +39,12 @@ function Layout() {
               <Route exact path="/user/create" element={<UserCreatePage />} />
               <Route exact path="/user/leave-approval-list" element={<LeaveApprovalListPage />} />
               <Route exact path="/user/list" element={<EmployeeListPage />} />
+            </Route>
+
+            <Route element={<CheckRole roles={[
+              UserRoles.SUPER_ADMIN,
+              UserRoles.ADMIN
+            ]} />}>
               <Route exact path="/user/attendances/all" element={<UserAttendancePage />} />
             </Route>
 

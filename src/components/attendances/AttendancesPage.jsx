@@ -2,14 +2,12 @@ import React, { useEffect, useState } from "react";
 import * as api from "../../api/Api";
 import { HumanMonth } from "../../helpers/HumanMonth";
 import { UnixToDate } from "../../helpers/UnixToDate";
-import { COOKIE_KEY, getCookie } from "../../helpers/CookieStorage";
 
 export default function AttendancesPage() {
     const [userDetails, setUserDetails] = useState([]);
 
     const fetchAttendances = async () => {
-        const udata = getCookie(COOKIE_KEY.USER_DATA)
-        const res = await api.fetchAttendanceList(udata.user_id);
+        const res = await api.fetchAttendanceList();
         setUserDetails(res);
     };
 
@@ -32,7 +30,9 @@ export default function AttendancesPage() {
                 <span>Logout Time</span>
             </div>
             <div>
-                {userDetails?.attendance?.map((each, index) => (
+                {userDetails?.attendance
+                ?.sort((a, b) => a.date > b.date ? 1 : -1)
+                ?.map((each, index) => (
                     <div key={index} style={{ color: `${each.late === 1 && 'red'}` }}>
                         <span>{HumanMonth(each.month)}</span>
                         <span> - </span>

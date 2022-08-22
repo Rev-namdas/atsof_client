@@ -55,7 +55,7 @@ export const changeAccountStatus = async (payload) => {
 
 export const storeAttendance = async (payload) => {
     try {
-        const res = await axios.post(APIENDPOINTS.save_attendance, payload);
+        const res = await axios.post(APIENDPOINTS.save_attendance, payload, config);
         return res?.data;
     } catch {
         return catchMsg;
@@ -64,7 +64,7 @@ export const storeAttendance = async (payload) => {
 
 export const storeLogout = async (payload) => {
     try {
-        const res = await axios.post(APIENDPOINTS.save_logout, payload);
+        const res = await axios.post(APIENDPOINTS.save_logout, payload, config);
         return res?.data;
     } catch {
         return catchMsg;
@@ -80,9 +80,20 @@ export const fetchAttendanceList = async () => {
     }
 }
 
+export const fetchUsersAttendanceList = async (payload) => {
+    try {
+        const res = await axios.post(
+            APIENDPOINTS.users_attendance_list, 
+            payload, config);
+        return res?.data?.attendances;
+    } catch {
+        return catchMsg;
+    }
+}
+
 export const leaveApply = async (payload) => {
     try {
-        const res = await axios.post(APIENDPOINTS.leave_apply, payload);
+        const res = await axios.post(APIENDPOINTS.leave_apply, payload, config);
         return res?.data;
     } catch {
         return catchMsg;

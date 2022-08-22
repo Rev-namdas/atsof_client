@@ -19,168 +19,148 @@ import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { COOKIE_KEY, getCookie } from "../../helpers/CookieStorage";
+import UserRoles from "../../helpers/UserRoles";
 
 export default function Sidebar({ toggleDrawer }) {
-    const [userRole, setUserRole] = useState([]);
+    const [navlist, setNavlist] = useState([])
     const navigate = useNavigate();
+
+    const fetchRole = async () => {
+        const udata = getCookie(COOKIE_KEY.USER_DATA)
+
+        if(udata.role.includes(UserRoles.SUPER_ADMIN)){
+            setNavlist([
+                {
+                    name: "Home",
+                    icon: <HomeIcon />,
+                    link: "/dashboard",
+                },
+                {
+                    name: "Attendances",
+                    icon: <FormatListBulletedIcon />,
+                    link: "/user/attendances",
+                },
+                {
+                    name: "User Attendances",
+                    icon: <FormatListBulletedIcon />,
+                    link: "/user/attendances/all",
+                },
+                {
+                    name: "Create Employee",
+                    icon: <PersonAddAlt1Icon />,
+                    link: "/user/create",
+                },
+                {
+                    name: "Employees",
+                    icon: <PeopleAltIcon />,
+                    link: "/user/list",
+                },
+                {
+                    name: "Leave Approval List",
+                    icon: <FactCheckIcon />,
+                    link: `${udata.role.includes(
+                        parseInt(
+                            process.env.REACT_APP_ROLE_SUPER_ADMIN
+                        )) 
+                        ? "/user/leave-approval-list" 
+                        : udata.role.includes(
+                            parseInt(
+                                process.env.REACT_APP_ROLE_ADMIN
+                            ))
+                            ? "/user/leave/list/recommend"
+                            : ""
+                    }`
+                },
+                {
+                    name: "Leave Apply",
+                    icon: <BookmarkAddIcon />,
+                    link: "/user/leave/apply",
+                },
+                {
+                    name: "Leave Status",
+                    icon: <IsoIcon />,
+                    link: "/user/leave-status",
+                },
+            ])
+        } else if(udata.role.includes(UserRoles.ADMIN)){
+            setNavlist([
+                {
+                    name: "Home",
+                    icon: <HomeIcon />,
+                    link: "/dashboard",
+                },
+                {
+                    name: "Attendances",
+                    icon: <FormatListBulletedIcon />,
+                    link: "/user/attendances",
+                },
+                {
+                    name: "User Attendances",
+                    icon: <FormatListBulletedIcon />,
+                    link: "/user/attendances/all",
+                },
+                {
+                    name: "Leave Approval List",
+                    icon: <FactCheckIcon />,
+                    link: `${udata.role.includes(
+                        parseInt(
+                            process.env.REACT_APP_ROLE_SUPER_ADMIN
+                        )) 
+                        ? "/user/leave-approval-list" 
+                        : udata.role.includes(
+                            parseInt(
+                                process.env.REACT_APP_ROLE_ADMIN
+                            ))
+                            ? "/user/leave/list/recommend"
+                            : ""
+                    }`
+                },
+                {
+                    name: "Leave Apply",
+                    icon: <BookmarkAddIcon />,
+                    link: "/user/leave/apply",
+                },
+                {
+                    name: "Leave Status",
+                    icon: <IsoIcon />,
+                    link: "/user/leave-status",
+                },
+            ])
+        } else if(udata.role.includes(UserRoles.USER)){
+            setNavlist([
+                {
+                    name: "Home",
+                    icon: <HomeIcon />,
+                    link: "/dashboard",
+                },
+                {
+                    name: "Attendances",
+                    icon: <FormatListBulletedIcon />,
+                    link: "/user/attendances",
+                },
+                {
+                    name: "Leave Apply",
+                    icon: <BookmarkAddIcon />,
+                    link: "/user/leave/apply",
+                },
+                {
+                    name: "Leave Status",
+                    icon: <IsoIcon />,
+                    link: "/user/leave-status",
+                },
+            ])
+        } else {
+            setNavlist([])
+        }
+    }
 
     useEffect(
         () => {
-            const udata = getCookie(COOKIE_KEY.USER_DATA)
-            setUserRole(udata.role);
+            fetchRole()
         },
         // eslint-disable-next-line
         []
     );
-
-    const AdminSidebar = () => {
-        return (
-            <>
-                <List>
-                    {[
-                        {
-                            name: "Home",
-                            icon: <HomeIcon />,
-                            link: "/dashboard",
-                        },
-                        {
-                            name: "Attendances",
-                            icon: <FormatListBulletedIcon />,
-                            link: "/user/attendances",
-                        },
-                        {
-                            name: "User Attendances",
-                            icon: <FormatListBulletedIcon />,
-                            link: "/user/attendances/all",
-                        },
-                        {
-                            name: "Create Employee",
-                            icon: <PersonAddAlt1Icon />,
-                            link: "/user/create",
-                        },
-                        {
-                            name: "Employees",
-                            icon: <PeopleAltIcon />,
-                            link: "/user/list",
-                        },
-                        {
-                            name: "Leave Approval List",
-                            icon: <FactCheckIcon />,
-                            link: `${userRole.includes(
-                                parseInt(
-                                    process.env.REACT_APP_ROLE_SUPER_ADMIN
-                                )) 
-                                ? "/user/leave-approval-list" 
-                                : userRole.includes(
-                                    parseInt(
-                                        process.env.REACT_APP_ROLE_ADMIN
-                                    ))
-                                    ? "/user/leave/list/recommend"
-                                    : ""
-                            }`
-                        },
-                        {
-                            name: "Leave Apply",
-                            icon: <BookmarkAddIcon />,
-                            link: "/user/leave/apply",
-                        },
-                        {
-                            name: "Leave Status",
-                            icon: <IsoIcon />,
-                            link: "/user/leave-status",
-                        },
-                    ].map((each, index) => (
-                        <ListItem
-                            key={index}
-                            disablePadding
-                            onClick={() => navigate(each.link)}
-                        >
-                            <ListItemButton>
-                                <ListItemIcon>{each.icon}</ListItemIcon>
-                                <ListItemText primary={each.name} />
-                            </ListItemButton>
-                        </ListItem>
-                    ))}
-                </List>
-                <Divider />
-                <List>
-                    {["All mail", "Trash", "Spam"].map((text, index) => (
-                        <ListItem key={text} disablePadding>
-                            <ListItemButton>
-                                <ListItemIcon>
-                                    {index % 2 === 0 ? (
-                                        <InboxIcon />
-                                    ) : (
-                                        <MailIcon />
-                                    )}
-                                </ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItemButton>
-                        </ListItem>
-                    ))}
-                </List>
-            </>
-        );
-    };
-
-    const UserSidebar = () => {
-        return (
-            <>
-                <List>
-                    {[
-                        {
-                            name: "Home",
-                            icon: <HomeIcon />,
-                            link: "/dashboard",
-                        },
-                        {
-                            name: "Attendances",
-                            icon: <FormatListBulletedIcon />,
-                            link: "/user/attendances",
-                        },
-                        {
-                            name: "Leave Apply",
-                            icon: <BookmarkAddIcon />,
-                            link: "/user/leave/apply",
-                        },
-                        {
-                            name: "Leave Status",
-                            icon: <IsoIcon />,
-                            link: "/user/leave-status",
-                        },
-                    ].map((each, index) => (
-                        <ListItem
-                            key={index}
-                            disablePadding
-                            onClick={() => navigate(each.link)}
-                        >
-                            <ListItemButton>
-                                <ListItemIcon>{each.icon}</ListItemIcon>
-                                <ListItemText primary={each.name} />
-                            </ListItemButton>
-                        </ListItem>
-                    ))}
-                </List>
-                <Divider />
-                <List>
-                    {["All mail", "Trash", "Spam"].map((text, index) => (
-                        <ListItem key={text} disablePadding>
-                            <ListItemButton>
-                                <ListItemIcon>
-                                    {index % 2 === 0 ? (
-                                        <InboxIcon />
-                                    ) : (
-                                        <MailIcon />
-                                    )}
-                                </ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItemButton>
-                        </ListItem>
-                    ))}
-                </List>
-            </>
-        );
-    };
 
     return (
         <Box
@@ -189,12 +169,58 @@ export default function Sidebar({ toggleDrawer }) {
             onClick={toggleDrawer(false)}
             onKeyDown={toggleDrawer(false)}
         >
-            {(userRole.includes(parseInt(process.env.REACT_APP_ROLE_SUPER_ADMIN))
-            || userRole.includes(parseInt(process.env.REACT_APP_ROLE_ADMIN))) ? (
-                <AdminSidebar />
-            ) : (
-                <UserSidebar />
-            )}
+            <List>
+                {navlist.map((each, index) => (
+                    <ListItem
+                        key={index}
+                        disablePadding
+                        onClick={() => navigate(each.link)}
+                    >
+                        <ListItemButton>
+                            <ListItemIcon>{each.icon}</ListItemIcon>
+                            <ListItemText primary={each.name} />
+                        </ListItemButton>
+                    </ListItem>
+                ))}
+            </List>
+            <Divider />
+            <List>
+                {["All mail", "Trash", "Spam"].map((text, index) => (
+                    <ListItem key={text} disablePadding>
+                        <ListItemButton>
+                            <ListItemIcon>
+                                {index % 2 === 0 ? (
+                                    <InboxIcon />
+                                ) : (
+                                    <MailIcon />
+                                )}
+                            </ListItemIcon>
+                            <ListItemText primary={text} />
+                        </ListItemButton>
+                    </ListItem>
+                ))}
+            </List>
+
+            {/* {console.log('super', userRole.includes(parseInt(process.env.REACT_APP_ROLE_SUPER_ADMIN)))}
+            {console.log('admin', userRole.includes(parseInt(process.env.REACT_APP_ROLE_ADMIN)))}
+
+            {(userRole.includes(
+                parseInt(process.env.REACT_APP_ROLE_SUPER_ADMIN)
+            ) === false
+            || userRole.includes(
+                parseInt(process.env.REACT_APP_ROLE_ADMIN)
+            )) === false
+            && <UserSidebar />}
+
+            {userRole.includes(
+                parseInt(process.env.REACT_APP_ROLE_ADMIN)
+            ) === true
+            && <AdminSidebar />}
+
+            {userRole.includes(
+                parseInt(process.env.REACT_APP_ROLE_SUPER_ADMIN)
+            ) === true
+            && <SuperAdminSidebar />} */}
         </Box>
     );
 }
