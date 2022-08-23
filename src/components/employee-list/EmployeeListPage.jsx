@@ -82,7 +82,7 @@ export default function EmployeeListPage() {
                 : (
                     employee?.map((each, index) => (
                         <div key={index}>
-                            {each.username} - {each.active ? "TRUE" : "FALSE"} -{" "}
+                            {each.username} - {each.department_id} - {each.active ? "TRUE" : "FALSE"} -{" "}
                             <button onClick={(e) => handleAccountStatus(e, each)}>
                                 {each.active ? "Deactivate" : "Activate"}
                             </button>

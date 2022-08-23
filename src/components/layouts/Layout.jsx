@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import UserRoles from "../../helpers/UserRoles";
 import AttendancesPage from "../attendances/AttendancesPage";
-import UserAttendancePage from "../attendances/UserAttendancePage";
+import UsersAttendancePage from "../attendances/UsersAttendancePage";
 import CheckAlreadyLoggedIn from "../authentication/CheckAlreadyLoggedIn";
 import CheckIsLoggedIn from "../authentication/CheckIsLoggedIn";
 import CheckRole from "../authentication/CheckRole";
@@ -45,7 +45,7 @@ function Layout() {
               UserRoles.SUPER_ADMIN,
               UserRoles.ADMIN
             ]} />}>
-              <Route exact path="/user/attendances/all" element={<UserAttendancePage />} />
+              <Route exact path="/user/attendances/all" element={<UsersAttendancePage />} />
             </Route>
 
             {/* Check User Role Before Proceed */}

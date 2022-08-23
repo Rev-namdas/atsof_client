@@ -11,6 +11,7 @@ export default function LeaveApprovalListPage() {
         const res = await api.pendingLeaveList();
 
         setLeaveList(res || []);
+        console.log(res);
     };
 
     useEffect(
@@ -20,6 +21,10 @@ export default function LeaveApprovalListPage() {
         //eslint-disable-next-line
         []
     );
+
+	const recommend = (val) => {
+		return val.map(each => each).join(", ")
+	}
 
 	const handleApprove = async (e, obj) => {
 		e.preventDefault()
@@ -118,7 +123,7 @@ export default function LeaveApprovalListPage() {
                     leaveList.map((each, index) => (
                         <div key={index}>
                             {each.name} - {UnixToDate(each.from_date)} - {UnixToDate(each.to_date)} - {leaveTypes[each.leave_id]} -{" "}
-                            {each.reason} -{" "}
+                            {each.reason} - {recommend(each.recommended)} - {recommend(each.declined)} -{" "}
                             <button onClick={(e) => handleApprove(e, each)}>Approve</button>{" "}
                             <button onClick={(e) => handleDecline(e, each)}>Decline</button>
                         </div>

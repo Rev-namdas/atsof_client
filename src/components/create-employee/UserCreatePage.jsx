@@ -87,7 +87,6 @@ export default function UserCreatePage() {
     const [isDisable, setIsDisable] = useState(false);
     const [workingDays, setWorkingDays] = useState(initialWorkingDays);
     const [departmentList, setDepartmentList] = useState([]);
-    const [chooseDepartment, setChooseDepartment] = useState("");
     const [selectedDepartment, setSelectedDepartment] = useState(0);
     const [departmentAccess, setDepartmentAccess] = useState([]);
     // office time type: common & custom
@@ -203,14 +202,6 @@ export default function UserCreatePage() {
 
     const handleDepartmentChange = (e) => {
         setSelectedDepartment(parseInt(e.target.value))
-        const chosenDept = departmentList.find(
-            (each) => each.dept_id === parseInt(e.target.value)
-        );
-
-        setChooseDepartment({
-            id: chosenDept.dept_id,
-            name: chosenDept.dept_name,
-        });
     };
 
     const handleDepartmentAccess = (e) => {
@@ -314,7 +305,7 @@ export default function UserCreatePage() {
             dayoff: dayOff,
             office_time: officeTime,
             leaves: leaves,
-            department: chooseDepartment,
+            department_id: selectedDepartment,
             dept_access: departmentAccess
         };
 

@@ -80,11 +80,10 @@ export const fetchAttendanceList = async () => {
     }
 }
 
-export const fetchUsersAttendanceList = async (payload) => {
+export const fetchUsersAttendanceList = async () => {
     try {
-        const res = await axios.post(
-            APIENDPOINTS.users_attendance_list, 
-            payload, config);
+        const res = await axios.get(
+            APIENDPOINTS.users_attendance_list, config);
         return res?.data?.attendances;
     } catch {
         return catchMsg;

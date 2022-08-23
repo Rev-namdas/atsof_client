@@ -3,11 +3,8 @@ import DateToUnix from "../../helpers/DateToUnix";
 import * as api from "../../api/Api"
 import { toast, ToastContainer } from "react-toastify";
 import moment from "moment"
-import { COOKIE_KEY, getCookie } from "../../helpers/CookieStorage";
 
 export default function LeaveApplyPage() {
-    const user = getCookie(COOKIE_KEY.USER_DATA)
-
     const [leaveStartDate, setLeaveStartDate] = useState(null);
     const [leaveEndDate, setLeaveEndDate] = useState(null)
     const [leaveType, setLeaveType] = useState(null);
@@ -69,7 +66,6 @@ export default function LeaveApplyPage() {
       e.preventDefault()
 
       const payload = {
-        user_id: user.user_id,
         from_date: leaveStartDate,
         to_date: leaveEndDate,
         taken_dates: findDatesByStartEndDates(leaveStartDate, leaveEndDate),
@@ -77,8 +73,6 @@ export default function LeaveApplyPage() {
         leave_id: leaveType,
         reason: leaveReason.trim()
       }
-
-      console.log(payload);
 
       const res = await api.leaveApply(payload)
 

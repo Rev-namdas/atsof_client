@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { COOKIE_KEY, getCookie } from "../../helpers/CookieStorage";
 import * as api from "../../api/Api";
 import { HumanMonth } from "../../helpers/HumanMonth";
 import { UnixToDate } from "../../helpers/UnixToDate";
 
-export default function UserAttendancePage() {
+export default function UsersAttendancePage() {
     const [attendances, setAttendances] = useState([]);
+    const [departments, setDepartments] = useState([])
 
     const fetchData = async () => {
-        const user = getCookie(COOKIE_KEY.USER_DATA);
+        const depts = await api.departmentList()
+        setDepartments(depts);
 
-        const payload = {
-            dept_ids: user.dept_access,
-        };
-        const result = await api.fetchUsersAttendanceList(payload);
+        const result = await api.fetchUsersAttendanceList();
         setAttendances(result);
     };
+
+    const departmentName = (id) => {
+        const dept_name = departments?.find(
+            each => each.dept_id === id)?.dept_name
+        return dept_name
+    }
 
     useEffect(
         () => {
@@ -48,7 +52,7 @@ export default function UserAttendancePage() {
                     >
                         <span>{ each.username }</span>
                         <span> - </span>
-                        <span>{ each.department.name }</span>
+                        <span>{ departmentName(each.department_id) }</span>
                         <span> - </span>
                         <span>{HumanMonth(each.attendance.month)}</span>
                         <span> - </span>
