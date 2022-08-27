@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import * as api from "../../api/Api";
+import { HumanMonth } from "../../helpers/HumanMonth";
+import { UnixToDate } from "../../helpers/UnixToDate";
 
-export default function AttendancesPage() {
+export default function OldAttendancesPage() {
     const [userDetails, setUserDetails] = useState([]);
 
     const fetchAttendances = async () => {
-        const res = await api.fetchUsersMonthlyAttendance();
+        const res = await api.fetchAttendanceList();
         setUserDetails(res);
     };
 
@@ -28,12 +30,12 @@ export default function AttendancesPage() {
                 <span>Logout Time</span>
             </div>
             <div>
-                {userDetails
+                {userDetails?.attendance
                 ?.map((each, index) => (
-                    <div key={index} >
-                        <span>{each.month}</span>
+                    <div key={index} style={{ color: `${each.late === 1 && 'red'}` }}>
+                        <span>{HumanMonth(each.month)}</span>
                         <span> - </span>
-                        <span>{each.date}</span>
+                        <span>{UnixToDate(each.date)}</span>
                         <span> - </span>
                         <span>{each.login_time}</span>
                         <span> - </span>
@@ -44,5 +46,3 @@ export default function AttendancesPage() {
         </>
     );
 }
-
-// style={{ color: `${each.late === 1 && 'red'}` }}

@@ -90,6 +90,16 @@ export const fetchUsersAttendanceList = async () => {
     }
 }
 
+export const fetchUsersMonthlyAttendance = async () => {
+    try {
+        const res = await axios.get(
+            APIENDPOINTS.users_monthly_attendance, config);
+        return res?.data?.attendances;
+    } catch {
+        return catchMsg;
+    }
+}
+
 export const leaveApply = async (payload) => {
     try {
         const res = await axios.post(APIENDPOINTS.leave_apply, payload, config);

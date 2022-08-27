@@ -11,6 +11,7 @@ export const APIENDPOINTS = {
 	save_logout: api_url + "/attendance/logout-time/save",
 	attendance_list: api_url + "/attendance/list",
 	users_attendance_list: api_url + "/attendance/list/by-dept",
+	users_monthly_attendance: api_url + "/attendance/monthly",
 	
 	all_leave_list: api_url + "/user/leave/list/all",
 	leave_apply: api_url + "/user/leave/apply",
