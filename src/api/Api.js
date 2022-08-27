@@ -90,10 +90,20 @@ export const fetchUsersAttendanceList = async () => {
     }
 }
 
-export const fetchUsersMonthlyAttendance = async () => {
+export const fetchUserMonthlyAttendance = async () => {
     try {
         const res = await axios.get(
-            APIENDPOINTS.users_monthly_attendance, config);
+            APIENDPOINTS.user_monthly_attendance, config);
+        return res?.data?.attendances;
+    } catch {
+        return catchMsg;
+    }
+}
+
+export const searchUserAttendanceByDates = async (payload) => {
+    try {
+        const res = await axios.post(
+            APIENDPOINTS.search_user_attendance, payload, config);
         return res?.data?.attendances;
     } catch {
         return catchMsg;
