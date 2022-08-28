@@ -1,3 +1,4 @@
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import * as api from "../../api/Api";
 import { HumanMonth } from "../../helpers/HumanMonth";
@@ -5,7 +6,9 @@ import { UnixToDate } from "../../helpers/UnixToDate";
 
 export default function UsersAttendancePage() {
     const [attendances, setAttendances] = useState([]);
-    const [departments, setDepartments] = useState([])
+    const [departments, setDepartments] = useState([]);
+    const [date, setDate] = useState("");
+    const [userDate, setUserDate] = useState("");
 
     const fetchData = async () => {
         const depts = await api.departmentList()
@@ -29,8 +32,31 @@ export default function UsersAttendancePage() {
         []
     );
 
+    const handleDate = (e) => {
+        setDate(moment(e.target.value, "YYYY-MM-DD").unix());
+        setUserDate(e.target.value)
+    }
+
+    const handleSearch = async () => {
+        const payload = {
+            date: date
+        }
+        const res = await api.searchDeptWiseAttendanceByDate(payload)
+        setAttendances(res)
+    }
+
     return (
         <>
+            <div>
+                <input 
+                    type="date" 
+                    name="date" 
+                    id="date" 
+                    value={userDate}
+                    onChange={handleDate}
+                />
+                <button onClick={handleSearch}>Search</button>
+            </div>
             <div>
                 <span>User</span>
                 <span> - </span>

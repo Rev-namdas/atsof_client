@@ -110,6 +110,16 @@ export const searchUserAttendanceByDates = async (payload) => {
     }
 }
 
+export const searchDeptWiseAttendanceByDate = async (payload) => {
+    try {
+        const res = await axios.post(
+            APIENDPOINTS.search_depts_attendance_list, payload, config);
+        return res?.data?.attendances;
+    } catch {
+        return catchMsg;
+    }
+}
+
 export const leaveApply = async (payload) => {
     try {
         const res = await axios.post(APIENDPOINTS.leave_apply, payload, config);
