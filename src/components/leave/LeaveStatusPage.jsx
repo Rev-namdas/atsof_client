@@ -36,6 +36,12 @@ export default function LeaveStatusPage() {
         <>
             <div>LeaveStatusPage</div>
 			<div>Leave Balance</div>
+			<div>
+				<span>Type -</span>
+				<span>Total -</span>
+				<span>Taken -</span>
+				<span>Remaining</span>
+			</div>
 			{leaveBalance.map((each, index) => (
 				<div key={index}>
 					<span>{ each.leave_type }</span>
@@ -43,6 +49,8 @@ export default function LeaveStatusPage() {
 					<span>{ each.leave_balance }</span>
 					<span> - </span>
 					<span>{ each.leave_taken }</span>
+					<span> - </span>
+					<span>{ (each.leave_balance - each.leave_taken) }</span>
 				</div>
 			))}
 			<br />

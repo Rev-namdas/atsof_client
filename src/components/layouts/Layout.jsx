@@ -14,6 +14,7 @@ import LeaveApprovalListPage from "../leave/LeaveApprovalListPage";
 import LeaveRecommendPage from "../leave/LeaveRecommendPage";
 import LeaveStatusPage from "../leave/LeaveStatusPage";
 import LoginPage from "../login/LoginPage";
+import ProfilePage from "../profile/ProfilePage";
 import Navbar from "./Navbar";
 
 function Layout() {
@@ -33,6 +34,7 @@ function Layout() {
             <Route exact path="/user/attendances" element={<AttendancesPage />} />
             <Route exact path="/user/leave/apply" element={<LeaveApplyPage />} />
             <Route exact path="/user/leave-status" element={<LeaveStatusPage />} />
+            <Route exact path="/user/profile" element={<ProfilePage />} />
 
             {/* Check User Role Before Proceed */}
             <Route element={<CheckRole roles={[UserRoles.SUPER_ADMIN]} />}>

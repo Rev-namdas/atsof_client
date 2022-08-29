@@ -43,6 +43,15 @@ export const fetchEmployeeList = async () => {
     }
 }
 
+export const userProfile = async () => {
+    try {
+        const res = await axios.get(APIENDPOINTS.user_profile, config);
+        return res?.data;
+    } catch {
+        return catchMsg;
+    }
+}
+
 export const changeAccountStatus = async (payload) => {
     try {
         const res = await axios.patch(APIENDPOINTS.change_account_status,

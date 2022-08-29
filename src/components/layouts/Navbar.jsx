@@ -42,6 +42,12 @@ export default function Navbar(props) {
         setAnchorEl(null);
     };
 
+    const navigateToProfile = () => {
+        setAnchorEl(null);
+
+        navigate("/user/profile")
+    };
+
     const handleLogout = async () => {
         setAnchorEl(null);
 
@@ -131,7 +137,7 @@ export default function Navbar(props) {
                                 open={Boolean(anchorEl)}
                                 onClose={handleClose}
                             >
-                                <MenuItem onClick={handleClose}>
+                                <MenuItem onClick={navigateToProfile}>
                                     Profile
                                 </MenuItem>
                                 <MenuItem onClick={handleLogout}>

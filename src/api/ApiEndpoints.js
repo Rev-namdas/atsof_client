@@ -3,6 +3,7 @@ export const api_url = "http://localhost:5050/api/v1"
 export const APIENDPOINTS = {
 	user_login: api_url + "/user/auth/login",
 	user_create: api_url + "/user/auth/register",
+	user_profile: api_url + "/account/details",
 	user_list: api_url + "/account/list",
 	user_lates: api_url + "/attendance/late",
 	change_account_status: api_url + "/account/change-account-status",
