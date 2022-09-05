@@ -2,7 +2,7 @@ import moment from "moment";
 import React, { useState } from "react";
 import * as api from "../../api/Api"
 
-export default function GovtLeaveSetupPage() {
+export default function HolidaySetupPage() {
     const [leaveDate, setLeaveDate] = useState("");
     const [userLeaveDate, setUserLeaveDate] = useState("");
     const [leaveName, setLeaveName] = useState("");
@@ -22,7 +22,7 @@ export default function GovtLeaveSetupPage() {
 			leave_date: leaveDate
 		}
 
-		const result = await api.createGovtLeave(payload)
+		const result = await api.createHoliday(payload)
 
 		if(result.flag === 'SUCCESS'){
 			setMessage(result.message)

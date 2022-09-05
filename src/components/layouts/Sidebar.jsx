@@ -56,14 +56,14 @@ export default function Sidebar({ toggleDrawer }) {
                     link: "/user/list",
                 },
                 {
-                    name: "Create Govt Leave",
+                    name: "Create Holiday",
                     icon: <TourIcon />,
-                    link: "/leave/govt/create",
+                    link: "/leave/holiday/create",
                 },
                 {
-                    name: "Assign Govt Leave",
+                    name: "Assign Holiday",
                     icon: <AssignmentLateIcon />,
-                    link: "/leave/govt/assign",
+                    link: "/leave/holiday/assign",
                 },
                 {
                     name: "Leave Approval List",

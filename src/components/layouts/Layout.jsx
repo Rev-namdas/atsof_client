@@ -9,8 +9,8 @@ import UserCreatePage from "../create-employee/UserCreatePage";
 import DashboardPage from "../dashboard/DashboardPage";
 import EmployeeListPage from "../employee-list/EmployeeListPage";
 import Error404Page from "../error 404/Error404Page";
-import AssignGovtLeavePage from "../leave/AssignGovtLeavePage";
-import GovtLeaveSetupPage from "../leave/GovtLeaveSetupPage";
+import AssignHolidayPage from "../leave/AssignHolidayPage";
+import HolidaySetupPage from "../leave/HolidaySetupPage";
 import LeaveApplyPage from "../leave/LeaveApplyPage";
 import LeaveApprovalListPage from "../leave/LeaveApprovalListPage";
 import LeaveRecommendPage from "../leave/LeaveRecommendPage";
@@ -43,8 +43,8 @@ function Layout() {
               <Route exact path="/user/create" element={<UserCreatePage />} />
               <Route exact path="/user/leave-approval-list" element={<LeaveApprovalListPage />} />
               <Route exact path="/user/list" element={<EmployeeListPage />} />
-              <Route exact path="/leave/govt/create" element={<GovtLeaveSetupPage />} />
-              <Route exact path="/leave/govt/assign" element={<AssignGovtLeavePage />} />
+              <Route exact path="/leave/holiday/create" element={<HolidaySetupPage />} />
+              <Route exact path="/leave/holiday/assign" element={<AssignHolidayPage />} />
             </Route>
 
             <Route element={<CheckRole roles={[

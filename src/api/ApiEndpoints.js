@@ -26,6 +26,7 @@ export const APIENDPOINTS = {
 
 	department_list: api_url + "/settings/department/list",
 
-	create_govt_leave: api_url + "/govt-leaves/create",
-	govt_leave_list: api_url + "/govt-leaves/fetch",
+	create_holiday: api_url + "/holiday/create",
+	holiday_list: api_url + "/holiday/fetch",
+	assign_holiday: api_url + "/holiday/assign",
 }

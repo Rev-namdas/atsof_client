@@ -211,18 +211,27 @@ export const departmentList = async () => {
     }
 }
     
-export const createGovtLeave = async (payload) => {
+export const createHoliday = async (payload) => {
     try {
-        const res = await axios.post(APIENDPOINTS.create_govt_leave, payload, config);
+        const res = await axios.post(APIENDPOINTS.create_holiday, payload, config);
         return res?.data;
     } catch {
         return catchMsg;
     }
 }
     
-export const getGovtLeaveList = async () => {
+export const getHolidayList = async () => {
     try {
-        const res = await axios.get(APIENDPOINTS.govt_leave_list, config);
+        const res = await axios.get(APIENDPOINTS.holiday_list, config);
+        return res?.data;
+    } catch {
+        return catchMsg;
+    }
+}
+    
+export const assignHoliday = async (payload) => {
+    try {
+        const res = await axios.post(APIENDPOINTS.assign_holiday, payload, config);
         return res?.data;
     } catch {
         return catchMsg;
