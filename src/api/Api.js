@@ -109,6 +109,16 @@ export const fetchUserMonthlyAttendance = async () => {
     }
 }
 
+export const fetchUsersByDept = async (payload) => {
+    try {
+        const res = await axios.post(
+            APIENDPOINTS.users_by_dept, payload, config);
+        return res?.data;
+    } catch {
+        return catchMsg;
+    }
+}
+
 export const searchUserAttendanceByDates = async (payload) => {
     try {
         const res = await axios.post(
@@ -196,6 +206,24 @@ export const departmentList = async () => {
     try {
         const res = await axios.get(APIENDPOINTS.department_list, config);
         return res?.data?.departments;
+    } catch {
+        return catchMsg;
+    }
+}
+    
+export const createGovtLeave = async (payload) => {
+    try {
+        const res = await axios.post(APIENDPOINTS.create_govt_leave, payload, config);
+        return res?.data;
+    } catch {
+        return catchMsg;
+    }
+}
+    
+export const getGovtLeaveList = async () => {
+    try {
+        const res = await axios.get(APIENDPOINTS.govt_leave_list, config);
+        return res?.data;
     } catch {
         return catchMsg;
     }

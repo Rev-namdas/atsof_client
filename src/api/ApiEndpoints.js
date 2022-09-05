@@ -15,6 +15,7 @@ export const APIENDPOINTS = {
 	search_depts_attendance_list: api_url + "/attendance/search/by-dept",
 	user_monthly_attendance: api_url + "/attendance/monthly",
 	search_user_attendance: api_url + "/attendance/search-by-dates",
+	users_by_dept: api_url + "/account/list/users-by-dept",
 	
 	all_leave_list: api_url + "/user/leave/list/all",
 	leave_apply: api_url + "/user/leave/apply",
@@ -23,5 +24,8 @@ export const APIENDPOINTS = {
 	leave_recommend: api_url + "/user/leave/recommend",
 	leave_status: api_url + "/user/leave/status",
 
-	department_list: api_url + "/settings/department/list"
+	department_list: api_url + "/settings/department/list",
+
+	create_govt_leave: api_url + "/govt-leaves/create",
+	govt_leave_list: api_url + "/govt-leaves/fetch",
 }

@@ -7,8 +7,6 @@ import {
     ListItemIcon,
     ListItemText,
 } from "@mui/material";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import FactCheckIcon from '@mui/icons-material/FactCheck';
@@ -16,6 +14,8 @@ import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import IsoIcon from '@mui/icons-material/Iso';
 import HomeIcon from "@mui/icons-material/Home";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import TourIcon from '@mui/icons-material/Tour';
+import AssignmentLateIcon from '@mui/icons-material/AssignmentLate';
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { COOKIE_KEY, getCookie } from "../../helpers/CookieStorage";
@@ -54,6 +54,16 @@ export default function Sidebar({ toggleDrawer }) {
                     name: "Employees",
                     icon: <PeopleAltIcon />,
                     link: "/user/list",
+                },
+                {
+                    name: "Create Govt Leave",
+                    icon: <TourIcon />,
+                    link: "/leave/govt/create",
+                },
+                {
+                    name: "Assign Govt Leave",
+                    icon: <AssignmentLateIcon />,
+                    link: "/leave/govt/assign",
                 },
                 {
                     name: "Leave Approval List",
@@ -184,43 +194,6 @@ export default function Sidebar({ toggleDrawer }) {
                 ))}
             </List>
             <Divider />
-            <List>
-                {["All mail", "Trash", "Spam"].map((text, index) => (
-                    <ListItem key={text} disablePadding>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                {index % 2 === 0 ? (
-                                    <InboxIcon />
-                                ) : (
-                                    <MailIcon />
-                                )}
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
-            </List>
-
-            {/* {console.log('super', userRole.includes(parseInt(process.env.REACT_APP_ROLE_SUPER_ADMIN)))}
-            {console.log('admin', userRole.includes(parseInt(process.env.REACT_APP_ROLE_ADMIN)))}
-
-            {(userRole.includes(
-                parseInt(process.env.REACT_APP_ROLE_SUPER_ADMIN)
-            ) === false
-            || userRole.includes(
-                parseInt(process.env.REACT_APP_ROLE_ADMIN)
-            )) === false
-            && <UserSidebar />}
-
-            {userRole.includes(
-                parseInt(process.env.REACT_APP_ROLE_ADMIN)
-            ) === true
-            && <AdminSidebar />}
-
-            {userRole.includes(
-                parseInt(process.env.REACT_APP_ROLE_SUPER_ADMIN)
-            ) === true
-            && <SuperAdminSidebar />} */}
         </Box>
     );
 }
