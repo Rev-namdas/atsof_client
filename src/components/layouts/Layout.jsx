@@ -7,6 +7,7 @@ import CheckIsLoggedIn from "../authentication/CheckIsLoggedIn";
 import CheckRole from "../authentication/CheckRole";
 import UserCreatePage from "../create-employee/UserCreatePage";
 import DashboardPage from "../dashboard/DashboardPage";
+import DepartmentPage from "../department/DepartmentPage";
 import EmployeeListPage from "../employee-list/EmployeeListPage";
 import Error404Page from "../error 404/Error404Page";
 import AssignHolidayPage from "../leave/AssignHolidayPage";
@@ -45,6 +46,7 @@ function Layout() {
               <Route exact path="/user/list" element={<EmployeeListPage />} />
               <Route exact path="/leave/holiday/create" element={<HolidaySetupPage />} />
               <Route exact path="/leave/holiday/assign" element={<AssignHolidayPage />} />
+              <Route exact path="/settings/department" element={<DepartmentPage />} />
             </Route>
 
             <Route element={<CheckRole roles={[

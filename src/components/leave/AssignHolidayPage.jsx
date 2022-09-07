@@ -6,9 +6,9 @@ export default function AssignHolidayPage() {
   const [deptList, setDeptList] = useState([])
   const [usersList, setUsersList] = useState([])
 
-  const [selectedHoliday, setSelectedHoliday] = useState(null)
-  const [selectedDept, setSelectedDept] = useState(null)
-  const [selectedUser, setSelectedUser] = useState(null)
+  const [selectedHoliday, setSelectedHoliday] = useState("")
+  const [selectedDept, setSelectedDept] = useState("")
+  const [selectedUser, setSelectedUser] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   
   const fetchData = async () => {
@@ -51,7 +51,10 @@ export default function AssignHolidayPage() {
 
     const result = await api.assignHoliday(payload)
     
-    console.log(payload, result);
+    alert(result.message)
+    setSelectedHoliday("")
+    setSelectedDept("")
+    setSelectedUser("")
   }
 
   useEffect(
@@ -67,7 +70,7 @@ export default function AssignHolidayPage() {
           <div>AssignGovtLeavePage</div>
 
           <span>
-              <select name="leave" id="leave" onChange={handleHolidayChange}>
+              <select name="leave" id="leave" value={selectedHoliday} onChange={handleHolidayChange}>
                   <option value="">Select Holiday</option>
                   <option value="0">All Holiday</option>
                   {leaveList.map(each => (
@@ -77,7 +80,7 @@ export default function AssignHolidayPage() {
           </span>
 
           <span>
-              <select name="dept" id="dept" onChange={handleDeptChange}>
+              <select name="dept" id="dept" value={selectedDept} onChange={handleDeptChange}>
                   <option value="">Select Department</option>
                   {deptList.map(each => (
                     <option key={each.dept_id} value={each.dept_id}>{ each.dept_name }</option>
@@ -86,7 +89,7 @@ export default function AssignHolidayPage() {
           </span>
 
           <span>
-              <select name="user" id="user" onChange={handleUserSelection}>
+              <select name="user" id="user" value={selectedUser} onChange={handleUserSelection}>
                 {
                   isLoading
                   ?

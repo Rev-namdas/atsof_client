@@ -211,6 +211,24 @@ export const departmentList = async () => {
     }
 }
     
+export const createNewDepartment = async (payload) => {
+    try {
+        const res = await axios.post(APIENDPOINTS.create_department, payload, config);
+        return res?.data;
+    } catch {
+        return catchMsg;
+    }
+}
+    
+export const deleteDepartment = async (dept_id) => {
+    try {
+        const res = await axios.delete(APIENDPOINTS.delete_department + `/${dept_id}`, config);
+        return res?.data;
+    } catch {
+        return catchMsg;
+    }
+}
+    
 export const createHoliday = async (payload) => {
     try {
         const res = await axios.post(APIENDPOINTS.create_holiday, payload, config);

@@ -16,6 +16,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import TourIcon from '@mui/icons-material/Tour';
 import AssignmentLateIcon from '@mui/icons-material/AssignmentLate';
+import AssistantIcon from '@mui/icons-material/Assistant';
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { COOKIE_KEY, getCookie } from "../../helpers/CookieStorage";
@@ -90,6 +91,11 @@ export default function Sidebar({ toggleDrawer }) {
                     name: "Leave Status",
                     icon: <IsoIcon />,
                     link: "/user/leave-status",
+                },
+                {
+                    name: "Departments",
+                    icon: <AssistantIcon />,
+                    link: "/settings/department",
                 },
             ])
         } else if(udata.role.includes(UserRoles.ADMIN)){

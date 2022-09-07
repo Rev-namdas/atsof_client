@@ -25,6 +25,8 @@ export const APIENDPOINTS = {
 	leave_status: api_url + "/user/leave/status",
 
 	department_list: api_url + "/settings/department/list",
+	create_department: api_url + "/settings/department/create",
+	delete_department: api_url + "/settings/department/delete",
 
 	create_holiday: api_url + "/holiday/create",
 	holiday_list: api_url + "/holiday/fetch",
