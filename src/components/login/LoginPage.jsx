@@ -96,7 +96,10 @@ export default function LoginPage() {
 				});
 
                 setCookie(COOKIE_KEY.USER_DATA, {...login_res, date: payload.date})
-                localStorage.setItem('atsofauth', 'AT-SOF-AUTH-CHECK')
+                localStorage.setItem('atsofauth', JSON.stringify({
+                    access: 'AT-SOF-AUTH-CHECK',
+                    expiresIn: moment().add(1, "hour").unix()
+                }))
 
 				setTimeout(() => {
                     window.location.href = "/dashboard"
