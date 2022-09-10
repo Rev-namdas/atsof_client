@@ -17,6 +17,7 @@ import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import TourIcon from '@mui/icons-material/Tour';
 import AssignmentLateIcon from '@mui/icons-material/AssignmentLate';
 import AssistantIcon from '@mui/icons-material/Assistant';
+import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { COOKIE_KEY, getCookie } from "../../helpers/CookieStorage";
@@ -93,6 +94,11 @@ export default function Sidebar({ toggleDrawer }) {
                     link: "/user/leave-status",
                 },
                 {
+                    name: "Exchange Holiday",
+                    icon: <ChangeCircleIcon />,
+                    link: "/user/holiday/exchange",
+                },
+                {
                     name: "Departments",
                     icon: <AssistantIcon />,
                     link: "/settings/department",
@@ -141,6 +147,11 @@ export default function Sidebar({ toggleDrawer }) {
                     icon: <IsoIcon />,
                     link: "/user/leave-status",
                 },
+                {
+                    name: "Exchange Holiday",
+                    icon: <ChangeCircleIcon />,
+                    link: "/user/holiday/exchange",
+                },
             ])
         } else if(udata.role.includes(UserRoles.USER)){
             setNavlist([
@@ -163,6 +174,11 @@ export default function Sidebar({ toggleDrawer }) {
                     name: "Leave Status",
                     icon: <IsoIcon />,
                     link: "/user/leave-status",
+                },
+                {
+                    name: "Exchange Holiday",
+                    icon: <ChangeCircleIcon />,
+                    link: "/user/holiday/exchange",
                 },
             ])
         } else {

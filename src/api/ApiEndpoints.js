@@ -31,4 +31,7 @@ export const APIENDPOINTS = {
 	create_holiday: api_url + "/holiday/create",
 	holiday_list: api_url + "/holiday/fetch",
 	assign_holiday: api_url + "/holiday/assign",
+	holiday_exchangeable_list: api_url + "/holiday/list/fetch",
+	holiday_exchange_request: api_url + "/holiday/exchange-request",
+	pending_exchange_list: api_url + "/holiday/pending/exchange-request",
 }

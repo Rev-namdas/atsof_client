@@ -255,3 +255,30 @@ export const assignHoliday = async (payload) => {
         return catchMsg;
     }
 }
+    
+export const exchangeAbleHolidays = async (payload) => {
+    try {
+        const res = await axios.post(APIENDPOINTS.holiday_exchangeable_list, payload, config);
+        return res?.data;
+    } catch {
+        return catchMsg;
+    }
+}
+    
+export const exchangeRequest = async (payload) => {
+    try {
+        const res = await axios.post(APIENDPOINTS.holiday_exchange_request, payload, config);
+        return res?.data;
+    } catch {
+        return catchMsg;
+    }
+}
+    
+export const pendingExchangeList = async () => {
+    try {
+        const res = await axios.get(APIENDPOINTS.pending_exchange_list, config);
+        return res?.data;
+    } catch {
+        return catchMsg;
+    }
+}

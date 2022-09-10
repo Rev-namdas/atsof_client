@@ -20,7 +20,7 @@ export default function AssignHolidayPage() {
   };
 
   const handleHolidayChange = (e) => {
-    setSelectedHoliday([parseInt(e.target.value)])
+    setSelectedHoliday(parseInt(e.target.value))
   }
 
   const handleDeptChange = async (e) => {
@@ -42,11 +42,11 @@ export default function AssignHolidayPage() {
   const handleSubmit = async () => {
     const payload = {
       holidays: 
-        selectedHoliday[0] === 0 
-        ? leaveList.map(each => each.leave_date)
-        : selectedHoliday,
+        selectedHoliday === 0 
+        ? leaveList
+        : leaveList.filter(each => each.leave_date === selectedHoliday),
       dept_id: selectedDept,
-      user_ids: selectedUser
+      user_id: selectedUser
     }
 
     const result = await api.assignHoliday(payload)
@@ -73,8 +73,8 @@ export default function AssignHolidayPage() {
               <select name="leave" id="leave" value={selectedHoliday} onChange={handleHolidayChange}>
                   <option value="">Select Holiday</option>
                   <option value="0">All Holiday</option>
-                  {leaveList.map(each => (
-                    <option key={each.leave_id} value={each.leave_date}>{ each.leave_name }</option>
+                  {leaveList.map((each, index) => (
+                    <option key={index} value={each.leave_date}>{ each.leave_name }</option>
                   ))}
               </select>
           </span>
@@ -82,8 +82,8 @@ export default function AssignHolidayPage() {
           <span>
               <select name="dept" id="dept" value={selectedDept} onChange={handleDeptChange}>
                   <option value="">Select Department</option>
-                  {deptList.map(each => (
-                    <option key={each.dept_id} value={each.dept_id}>{ each.dept_name }</option>
+                  {deptList.map((each, index) => (
+                    <option key={index} value={each.dept_id}>{ each.dept_name }</option>
                   ))}
               </select>
           </span>
