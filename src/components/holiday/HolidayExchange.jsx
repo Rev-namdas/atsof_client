@@ -55,14 +55,17 @@ export default function HolidayExchange() {
         setPendingList(result);
     };
 
+    const fetchPendingList = async () => {
+        const result = await api.pendingExchangeList()
+        setPendingList(result);
+    }
+
     const departmentName = (id) => {
         return deptList.find(each => each.dept_id === id).dept_name
     }
 
     const pendingStatus = (val) => {
-        const status = {
-            0: "Pending"
-        }
+        const status = { 0: "Pending" }
 
         return status[val]
     }
@@ -101,13 +104,28 @@ export default function HolidayExchange() {
         const payload = {
             selection: exchangeSelection,
             user_id: userSelection?.split("_")[0],
-            date: dateSelection
+            date: parseInt(dateSelection.split("_")[0]),
+            details: dateSelection.split("_")[1]
         };
 
         const result = await api.exchangeRequest(payload)
 
         alert(result.message)
+        fetchPendingList()
     };
+
+    const handleApprove = async (user) => {
+        const payload = {
+            user_id: user.user_id,
+            date: user.exchanged_dates.date,
+            holiday_type: user.exchanged_dates.details
+        }
+
+        const result = await api.approveExchangeRequest(payload)
+
+        alert(result.message)
+        fetchPendingList()
+    }
 
     return (
         <>
@@ -150,40 +168,28 @@ export default function HolidayExchange() {
                     name="list"
                     id="list"
                     value={dateSelection}
-                    onChange={(e) => setDateSelection(parseInt(e.target.value))}
+                    onChange={(e) => setDateSelection(e.target.value)}
                 >
                     {isLoading ? (
                         <option value="no">Loading...</option>
                     ) : (
                         <>
-                            {exchangeSelection === "" && (
+                            {exchangeSelection === ""
+                            ? (
                                 <option value="">
                                     Select Exchange Type First
                                 </option>
-                            )}
-                            {exchangeSelection === "day-off" && (
+                            )
+                            :
                                 <>
-                                    <option value="">Select Day Off</option>
+                                    <option value="">Select {`${exchangeSelection === 'day-off' ? "Day Off" : "Holiday"}`}</option>
                                     {list.map((each, index) => (
-                                        <option key={index} value={each.unix}>
-                                            {each.date}
+                                        <option key={index} value={`${each.date}_${each.details}`}>
+                                            { each.label }
                                         </option>
                                     ))}
                                 </>
-                            )}
-                            {exchangeSelection === "holiday" && (
-                                <>
-                                    <option value="">Select Holiday</option>
-                                    {list.map((each, index) => (
-                                        <option
-                                            key={index}
-                                            value={each.leave_date}
-                                        >
-                                            {each.leave_name}
-                                        </option>
-                                    ))}
-                                </>
-                            )}
+                            }
                         </>
                     )}
                 </select>
@@ -203,6 +209,7 @@ export default function HolidayExchange() {
                             <th>Username</th>
                             <th>Department</th>
                             <th>Date</th>
+                            <th>Details</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -213,8 +220,9 @@ export default function HolidayExchange() {
                                 <td>{ each.username }</td>
                                 <td>{ departmentName(each.department_id) }</td>
                                 <td>{ humanReadAbleDate(each.exchanged_dates.date) }</td>
+                                <td>{ each.exchanged_dates.details }</td>
                                 <td>{ pendingStatus(each.exchanged_dates.approved) }</td>
-                                <td><button>Approve</button></td>
+                                <td><button onClick={() => handleApprove(each)}>Approve</button></td>
                             </tr>
                         ))}         
                     </tbody>

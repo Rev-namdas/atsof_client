@@ -282,3 +282,12 @@ export const pendingExchangeList = async () => {
         return catchMsg;
     }
 }
+    
+export const approveExchangeRequest = async (payload) => {
+    try {
+        const res = await axios.patch(APIENDPOINTS.approve_exchange_request, payload, config);
+        return res?.data;
+    } catch {
+        return catchMsg;
+    }
+}

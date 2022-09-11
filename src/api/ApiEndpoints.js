@@ -34,4 +34,5 @@ export const APIENDPOINTS = {
 	holiday_exchangeable_list: api_url + "/holiday/list/fetch",
 	holiday_exchange_request: api_url + "/holiday/exchange-request",
 	pending_exchange_list: api_url + "/holiday/pending/exchange-request",
+	approve_exchange_request: api_url + "/holiday/exchange-request/approve",
 }
