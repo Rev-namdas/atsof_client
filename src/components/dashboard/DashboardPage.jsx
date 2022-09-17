@@ -3,6 +3,8 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function DashboardPage() {
+    document.title = "AT Soft | Dashboard"
+
     return (
         <>
             <ToastContainer

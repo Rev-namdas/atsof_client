@@ -1,0 +1,50 @@
+.flexbox{
+	display: flex;
+	align-items: center;
+	margin-bottom: 0.2rem;
+}
+
+.flex-1{
+	flex: 1;
+}
+
+.mr-1{
+	margin-right: 0.5rem;
+}
+.mt-2{
+	margin-top: 2rem;
+}
+
+.profile__box__wrapper{
+	width: 99.9vw;
+	display: flex;
+	justify-content: center;
+	color: #645CAA;
+}
+
+.profile__box{
+	height: max-content;
+	min-width: 40rem;
+	margin-top: 1rem;
+	padding: 1.5rem;
+	background-color: white;
+	border-radius: 0.5rem;
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.5);
+}
+
+.profile__bar{
+	height: 2rem;
+	width: 0.4rem;
+	background-color: #645CAA;
+	background: #645CAA;
+	color: #645CAA;
+}
+
+.profile__title{
+	height: 2rem;
+	width: 8rem;
+	padding-left: 0.5rem;
+	background-color: #edebff;
+	color: #645CAA;
+	line-height: 2rem;
+}

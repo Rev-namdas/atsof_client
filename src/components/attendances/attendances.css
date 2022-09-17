@@ -1,0 +1,32 @@
+.atpage__wrapper{
+	width: 99.7vw;
+	display: flex;
+	justify-content: center;
+}
+
+.atpage__box{
+	height: max-content;
+	min-width: 50rem;
+	margin: 1rem 0;
+	padding: 1.5rem;
+	background-color: white;
+	border-radius: 0.5rem;
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.5);
+}
+
+.atpage__datepicker{
+	display: flex;
+	justify-content: space-between;
+}
+
+.flexbox{
+	display: flex;
+}
+
+.flex-1{
+	flex: 1;
+}
+
+.mw-5{
+	min-width: 5rem;
+}

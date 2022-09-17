@@ -21,38 +21,19 @@ export default function HolidayExchange() {
         // eslint-disable-next-line
         []
     );
-
+    
     const fetchData = async () => {
         const user = getCookie(COOKIE_KEY.USER_DATA);
-        let users = []
+        const payload = { dept_ids: user.dept_access };
+        const usersRequest = api.fetchUsersByDept(payload);
+        const deptsRequest = api.departmentList()
+        const listRequest = api.pendingExchangeList()
 
-        if(user.dept_access.length === 0){
-            users.push({
-                user_id: user.user_id,
-                username: user.username,
-                dayoff: user.dayoff[0]
-            });
-        } else {
-            const payload = {
-                dept_ids: user.dept_access,
-            };
-            
-            users = await api.fetchUsersByDept(payload);
-
-            users.unshift({
-                user_id: user.user_id,
-                username: user.username,
-                dayoff: user.dayoff[0]
-            });
-        }
+        const [users, depts, list] = await Promise.all([usersRequest, deptsRequest, listRequest])
 
         setUsers(users);
-
-        const depts = await api.departmentList()
         setDeptList(depts);
-
-        const result = await api.pendingExchangeList()
-        setPendingList(result);
+        setPendingList(list);
     };
 
     const fetchPendingList = async () => {
@@ -102,7 +83,6 @@ export default function HolidayExchange() {
 
     const handleApply = async () => {
         const payload = {
-            selection: exchangeSelection,
             user_id: userSelection?.split("_")[0],
             date: parseInt(dateSelection.split("_")[0]),
             details: dateSelection.split("_")[1]
