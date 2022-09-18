@@ -103,7 +103,7 @@ export default function LeaveApprovalListPage() {
 	}
 
     return (
-        <>
+        <div style={{ marginTop: "5rem" }}>
 			<ToastContainer
               position="bottom-center"
               autoClose={5000}
@@ -130,6 +130,6 @@ export default function LeaveApprovalListPage() {
                     ))
                 )
             }
-        </>
+        </div>
     );
 }

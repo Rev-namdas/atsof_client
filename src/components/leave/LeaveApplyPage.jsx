@@ -1,166 +1,249 @@
 import React, { useState } from "react";
-import DateToUnix from "../../helpers/DateToUnix";
-import * as api from "../../api/Api"
+import * as api from "../../api/Api";
 import { toast, ToastContainer } from "react-toastify";
-import moment from "moment"
+import moment from "moment";
+import "./leave.css";
+import DatePickerField from "../utilities/DatePicker";
+import {
+    FormControl,
+    InputLabel,
+    MenuItem,
+    Select,
+    TextField,
+} from "@mui/material";
+import CustomButton from "../utilities/CustomButton";
 
 export default function LeaveApplyPage() {
-    const [leaveStartDate, setLeaveStartDate] = useState(null);
-    const [leaveEndDate, setLeaveEndDate] = useState(null)
-    const [leaveType, setLeaveType] = useState(null);
+    document.title = "AT Soft | Leave Apply Page";
+
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
+    const [leaveStartDate, setLeaveStartDate] = useState(
+        moment().startOf("date").unix()
+    );
+    const [leaveEndDate, setLeaveEndDate] = useState(
+        moment().startOf("date").unix()
+    );
+    const [leaveType, setLeaveType] = useState("");
     const [leaveReason, setLeaveReason] = useState("");
 
     const findDatesByStartEndDates = (from_date, to_date) => {
-      const startDate = moment(from_date * 1000)
-      const endDate = moment(to_date * 1000)
-      const leave_day_count = endDate.diff(startDate, 'days')
+        const startDate = moment(from_date * 1000);
+        const endDate = moment(to_date * 1000);
+        const leave_day_count = endDate.diff(startDate, "days");
 
-      let dates = [{ day: startDate.day(), date: startDate.unix() }]
-      
-      if(leave_day_count === 0){
-        return dates
-      }
-      
-      if(leave_day_count === 1){
-        dates = [
-          { day: startDate.day(), date: startDate.unix() }, 
-          { day: endDate.day(), date: endDate.unix() }
-        ]
-        
-        return dates
-      }
+        let dates = [{ day: startDate.day(), date: startDate.unix() }];
 
-      for(let i=0; i<leave_day_count; i++){
-        const nextDate = startDate.add(1, 'days')
-        
-        dates.push({
-          day: nextDate.day(),
-          date: nextDate.unix()
-        })
-      }
+        if (leave_day_count === 0) {
+            return dates;
+        }
 
-      return dates
-    }
+        if (leave_day_count === 1) {
+            dates = [
+                { day: startDate.day(), date: startDate.unix() },
+                { day: endDate.day(), date: endDate.unix() },
+            ];
 
-    const handleDate = (e) => {
-      if(e.target.name === 'from_date'){
-        const date = new Date(e.target.value)
+            return dates;
+        }
 
-        setLeaveStartDate(DateToUnix(date))
-      } else if(e.target.name === 'to_date'){
-        const date = new Date(e.target.value)
+        for (let i = 0; i < leave_day_count; i++) {
+            const nextDate = startDate.add(1, "days");
 
-        setLeaveEndDate(DateToUnix(date))
-      }
+            dates.push({
+                day: nextDate.day(),
+                date: nextDate.unix(),
+            });
+        }
+
+        return dates;
+    };
+
+    const handleStartDate = (value) => {
+        setStartDate(value);
+        setLeaveStartDate(moment(value, "YYYY-MM-DD").startOf("day").unix());
+    };
+
+    const handleEndDate = (value) => {
+        setEndDate(value);
+        setLeaveEndDate(moment(value, "YYYY-MM-DD").startOf("day").unix());
     };
 
     const handleLeaveType = (e) => {
-      setLeaveType(parseInt(e.target.value));
+        setLeaveType(parseInt(e.target.value));
     };
 
     const handleReason = (e) => {
-      setLeaveReason(e.target.value)
+        setLeaveReason(e.target.value);
     };
 
     const handleSubmit = async (e) => {
-      e.preventDefault()
+        e.preventDefault();
 
-      const payload = {
-        from_date: leaveStartDate,
-        to_date: leaveEndDate,
-        taken_dates: findDatesByStartEndDates(leaveStartDate, leaveEndDate),
-        leave_count: findDatesByStartEndDates(leaveStartDate, leaveEndDate).length,
-        leave_id: leaveType,
-        reason: leaveReason.trim()
-      }
+        const errors = [null, undefined, ""];
 
-      const res = await api.leaveApply(payload)
+        if (errors.includes(leaveType) || errors.includes(leaveReason)) {
+            toast.dismiss();
+            return toast.error("All fields are required", {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }
 
-      if(res.flag === 'SUCCESS'){
-        toast.dismiss()
-				toast.success(res.message, {
-					position: "top-center",
-					autoClose: 2000,
-					hideProgressBar: false,
-					closeOnClick: true,
-					pauseOnHover: true,
-					draggable: true,
-					progress: undefined,
-				});
-      } else if(res.flag === 'FAIL'){
-        toast.dismiss()
-				toast.error(res.message, {
-					position: "top-center",
-					autoClose: 2000,
-					hideProgressBar: false,
-					closeOnClick: true,
-					pauseOnHover: true,
-					draggable: true,
-					progress: undefined,
-				});
-      }
-    }
+        const payload = {
+            from_date: leaveStartDate,
+            to_date: leaveEndDate,
+            taken_dates: findDatesByStartEndDates(leaveStartDate, leaveEndDate),
+            leave_count: findDatesByStartEndDates(leaveStartDate, leaveEndDate)
+                .length,
+            leave_id: leaveType,
+            reason: leaveReason.trim(),
+        };
+
+        const res = await api.leaveApply(payload);
+
+        if (res.flag === "SUCCESS") {
+            toast.dismiss();
+            toast.success(res.message, {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        } else if (res.flag === "FAIL") {
+            toast.dismiss();
+            toast.error(res.message, {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }
+    };
 
     return (
-        <>
-            <ToastContainer
-              position="bottom-center"
-              autoClose={5000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-            />
-
-            <div>LeaveApplyPage</div>
-            <div>
-                <label htmlFor="date">From Date</label>
-                <input
-                    type="date"
-                    name="from_date"
-                    id="date"
-                    onChange={handleDate}
+        <div className="leavepage__wrapper">
+            <div className="leavepage__box">
+                <ToastContainer
+                    position="bottom-center"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
                 />
 
-                <label htmlFor="date">To Date</label>
-                <input
-                    type="date"
-                    name="to_date"
-                    id="date"
-                    onChange={handleDate}
-                />
+                <div className="designbox">
+                    <span className="designbox__bar"></span>
+                    <h3 className="designbox__title">Leave Apply Page</h3>
+                </div>
+
+                <div style={{ display: "flex", alignItems: "center" }}>
+                    <label style={{ minWidth: "5rem" }} htmlFor="date">
+                        From Date
+                    </label>
+                    <DatePickerField
+                        value={startDate}
+                        onChange={handleStartDate}
+                    />
+
+                    <label style={{ minWidth: "5rem" }} htmlFor="date">
+                        To Date
+                    </label>
+                    <DatePickerField value={endDate} onChange={handleEndDate} />
+                </div>
+                <div
+                    style={{
+                        margin: "1rem 0",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                    }}
+                >
+                    <label htmlFor="type">Leave Type</label>
+                    <FormControl sx={{ minWidth: "10rem" }} size="small">
+                        {/* <FormControl sx={{ minWidth: "10rem", marginLeft: "1rem" }} size="small"> */}
+                        <InputLabel
+                            id="leave-type"
+                            sx={{ color: "#645CAA !important" }}
+                        >
+                            Select Type
+                        </InputLabel>
+                        <Select
+                            labelId="leave-type"
+                            id="leave-type"
+                            value={leaveType}
+                            label="Select Type"
+                            onChange={handleLeaveType}
+                            sx={{
+                                "& .MuiOutlinedInput-notchedOutline": {
+                                    borderColor: "#645CAA",
+                                },
+                                "&.Mui-focused .MuiOutlinedInput-notchedOutline":
+                                    {
+                                        borderColor: "#645CAA",
+                                    },
+                            }}
+                        >
+                            <MenuItem
+                                value={process.env.REACT_APP_LEAVE_CASUAL}
+                            >
+                                Casual
+                            </MenuItem>
+                            <MenuItem value={process.env.REACT_APP_LEAVE_SICK}>
+                                Sick
+                            </MenuItem>
+                            <MenuItem
+                                value={process.env.REACT_APP_LEAVE_ANNUAL}
+                            >
+                                Annual
+                            </MenuItem>
+                        </Select>
+                    </FormControl>
+                    <label htmlFor="reason">Reason</label>
+                    <TextField
+                        label="Leave Reason"
+                        value={leaveReason}
+                        onChange={handleReason}
+                        id="standard-multiline-static"
+                        multiline
+                        rows={2}
+                        variant="outlined"
+                        // defaultValue="Default Value"
+                        InputLabelProps={{
+                            style: { color: "#645CAA" },
+                        }}
+                        sx={{
+                            "& .MuiOutlinedInput-notchedOutline": {
+                                borderColor: "#645CAA",
+                            },
+                            "& .MuiOutlinedInput-root.Mui-focused": {
+                                "& > fieldset": {
+                                    borderColor: "#645CAA",
+                                    "& > legend": {
+                                        color: "#645CAA",
+                                    },
+                                },
+                            },
+                        }}
+                    />
+                </div>
+                <CustomButton label="Apply" onClick={handleSubmit} />
             </div>
-            <div>
-                <label htmlFor="type">Leave Type</label>
-                <select name="type" id="type" onChange={handleLeaveType}>
-                    <option value="">Select Type</option>
-                    <option value={process.env.REACT_APP_LEAVE_CASUAL}>
-                        Casual
-                    </option>
-                    <option value={process.env.REACT_APP_LEAVE_SICK}>
-                        Sick
-                    </option>
-                    <option value={process.env.REACT_APP_LEAVE_ANNUAL}>
-                        Annual
-                    </option>
-                </select>
-            </div>
-            <div>
-                <label htmlFor="reason">Reason</label>
-                <textarea
-                    name="reason"
-                    id="reason"
-                    cols="30"
-                    rows="2"
-                    onChange={handleReason}
-                ></textarea>
-            </div>
-            <div>
-                <button onClick={handleSubmit}>Apply</button>
-            </div>
-        </>
+        </div>
     );
 }

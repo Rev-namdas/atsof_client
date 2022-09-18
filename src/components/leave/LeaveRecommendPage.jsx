@@ -5,6 +5,8 @@ import { toast, ToastContainer } from "react-toastify";
 import { leaveTypes } from "../../helpers/LeaveTypes";
 
 export default function LeaveRecommendPage() {
+	document.title = "AT Soft | Leave Recommend Page"
+
     const [leaveList, setLeaveList] = useState([]);
 
     const fetchData = async () => {
@@ -102,7 +104,7 @@ export default function LeaveRecommendPage() {
 	}
 
     return (
-        <>
+        <div style={{ marginTop: "5rem" }}>
 			<ToastContainer
               position="bottom-center"
               autoClose={5000}
@@ -129,6 +131,6 @@ export default function LeaveRecommendPage() {
                     ))
                 )
             }
-        </>
+        </div>
     );
 }

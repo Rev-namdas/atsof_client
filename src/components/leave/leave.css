@@ -1,0 +1,15 @@
+.leavepage__wrapper{
+	width: 98vw;
+	display: flex;
+	justify-content: center;
+}
+
+.leavepage__box{
+	height: max-content;
+	min-width: 40rem;
+	margin: 5rem 0 1rem 0;
+	padding: 0 1.5rem 1.5rem 1.5rem;
+	background-color: white;
+	border-radius: 0.5rem;
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.5);
+}
