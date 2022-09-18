@@ -3,6 +3,7 @@ import * as api from "../../api/Api";
 import moment from "moment";
 import "./attendances.css";
 import DatePickerField from "../utilities/DatePicker";
+import CustomButton from "../utilities/CustomButton";
 
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -77,7 +78,7 @@ export default function AttendancesPage() {
             <div className="atpage__box">
                 <div className="atpage__datepicker">
                     <div className="flexbox">
-                        <label className="flex-1 mw-5" htmlFor="startdate">
+                        <label className="atpage__datepicker-label" htmlFor="startdate">
                             Start Date
                         </label>
                         <DatePickerField
@@ -88,7 +89,7 @@ export default function AttendancesPage() {
                     </div>
 
                     <div className="flexbox">
-                        <label className="flex-1 mw-5" htmlFor="enddate">
+                        <label className="atpage__datepicker-label" htmlFor="enddate">
                             End Date
                         </label>
                         <DatePickerField
@@ -98,12 +99,17 @@ export default function AttendancesPage() {
                             onChange={handleEndDate}
                         />
                     </div>
-                    <button onClick={handleSearch}>Search</button>
-                    <button onClick={handleReset}>Reset</button>
+                    <CustomButton label="Search" onClick={handleSearch} />
+                    <CustomButton 
+                        label="Reset" 
+                        color="#C21010" 
+                        hoverColor="#820000"
+                        onClick={handleReset} 
+                    />
                 </div>
 
-                <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 650 }}>
+                <TableContainer component={Paper} sx={{ overflow: "auto", maxHeight: "65vh" }}>
+                    <Table stickyHeader sx={{ minWidth: 650 }}>
                         <TableHead>
                             <TableRow>
                                 {[
@@ -116,7 +122,8 @@ export default function AttendancesPage() {
                                         key={index}
                                         align="center"
                                         sx={{
-                                            color: "#645CAA",
+                                            backgroundColor: "#645CAA",
+                                            color: "white",
                                             fontWeight: "bold",
                                         }}
                                     >

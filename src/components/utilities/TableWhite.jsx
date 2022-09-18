@@ -12,22 +12,27 @@ export default function TableWhite({
     body = [],
     keys = [],
     colorDecider = "",
-	colorRules = {}
+	colorRules = {},
+    maxHeight = "100vh"
 }) {
     const getColor = (val) => {
 		return colorRules[val] || "#645CAA"
     };
 
     return (
-        <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }}>
+        <TableContainer component={Paper} sx={{ overflow: "auto", maxHeight: maxHeight }}>
+            <Table stickyHeader sx={{ minWidth: 650 }}>
                 <TableHead>
                     <TableRow>
                         {header.map((each, index) => (
                             <TableCell
                                 key={index}
                                 align="center"
-                                sx={{ color: "#645CAA", fontWeight: "bold" }}
+                                sx={{ 
+                                    backgroundColor: "#645CAA", 
+                                    color: "white", 
+                                    fontWeight: "bold" 
+                                }}
                             >
                                 {each}
                             </TableCell>

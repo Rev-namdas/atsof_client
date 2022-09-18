@@ -86,7 +86,7 @@ export default function Navbar({ children }) {
             {!!localStorage.getItem("atsofauth") && (
                 <Box sx={{ flexGrow: 1 }}>
                     <AppBar
-                        position="static"
+                        position="fixed"
                         sx={{ backgroundColor: "#645CAA" }}
                     >
                         <Toolbar>

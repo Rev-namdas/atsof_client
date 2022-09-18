@@ -11,3 +11,26 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.designbox{
+	display: flex;
+	align-items: center;
+	margin-bottom: 0.2rem;
+}
+
+.designbox__bar{
+	height: 2rem;
+	width: 0.4rem;
+	background-color: #645CAA;
+	background: #645CAA;
+	color: #645CAA;
+}
+
+.designbox__title{
+	height: 2rem;
+	width: max-content;
+	padding: 0 0.5rem;
+	background-color: #edebff;
+	color: #645CAA;
+	line-height: 2rem;
+}

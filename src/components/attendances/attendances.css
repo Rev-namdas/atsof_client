@@ -1,5 +1,5 @@
 .atpage__wrapper{
-	width: 99.7vw;
+	width: 98vw;
 	display: flex;
 	justify-content: center;
 }
@@ -7,7 +7,7 @@
 .atpage__box{
 	height: max-content;
 	min-width: 50rem;
-	margin: 1rem 0;
+	margin: 5rem 0 1rem 0;
 	padding: 1.5rem;
 	background-color: white;
 	border-radius: 0.5rem;
@@ -17,6 +17,15 @@
 .atpage__datepicker{
 	display: flex;
 	justify-content: space-between;
+	margin-bottom: 0.5rem;
+}
+
+.atpage__datepicker-label{
+	flex: 1;
+	min-width: 5rem;
+	color: #645CAA;
+	font-weight: bold;
+	margin-right: 1rem;
 }
 
 .flexbox{

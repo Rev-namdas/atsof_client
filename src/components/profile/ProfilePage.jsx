@@ -35,9 +35,9 @@ export default function ProfilePage() {
     return (
         <div className="profile__box__wrapper">
             <div className="profile__box">
-                <div className="flexbox">
-                    <span className="profile__bar"></span>
-                    <h3 className="profile__title">Profile Page</h3>
+                <div className="designbox">
+                    <span className="designbox__bar"></span>
+                    <h3 className="designbox__title">Profile Page</h3>
                 </div>{" "}
                 <br />
                 <div className="flexbox">

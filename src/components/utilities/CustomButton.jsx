@@ -5,7 +5,9 @@ export default function CustomButton({
     label,
     onClick = () => {},
     disabled = false,
-    type="button"
+    type="button",
+    color="#645CAA",
+    hoverColor="#3b347a"
 }) {
     return (
         <Button
@@ -16,9 +18,9 @@ export default function CustomButton({
             sx={{
                 marginBottom: "0.5rem",
                 textTransform: "none",
-                backgroundColor: "#645CAA",
+                backgroundColor: color,
                 "&:hover": {
-                    backgroundColor: "#3b347a",
+                    backgroundColor: hoverColor,
                 },
             }}
         >
