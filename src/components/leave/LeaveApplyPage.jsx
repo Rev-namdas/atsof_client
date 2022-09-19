@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as api from "../../api/Api";
 import { toast, ToastContainer } from "react-toastify";
 import moment from "moment";
@@ -26,6 +26,25 @@ export default function LeaveApplyPage() {
     );
     const [leaveType, setLeaveType] = useState("");
     const [leaveReason, setLeaveReason] = useState("");
+    const [leaveBalance, setLeaveBalance] = useState({});
+    const [leaveRemaining, setLeaveRemaining] = useState("")
+
+    useEffect(() => {
+        fetchLeaveData()
+    }, 
+    // eslint-disable-next-line
+    [])
+    
+    const fetchLeaveData = async () => {
+        const res = await api.leaveStatus()
+        const leave_balance = {}
+
+        res?.leave?.forEach(each => {
+            leave_balance[each.leave_type] = (each.leave_balance - each.leave_taken)
+        })
+
+        setLeaveBalance(leave_balance);
+    }
 
     const findDatesByStartEndDates = (from_date, to_date) => {
         const startDate = moment(from_date * 1000);
@@ -70,7 +89,8 @@ export default function LeaveApplyPage() {
     };
 
     const handleLeaveType = (e) => {
-        setLeaveType(parseInt(e.target.value));
+        setLeaveType(e.target.value);
+        setLeaveRemaining(leaveBalance[(e.target.value).split("_")[1]])
     };
 
     const handleReason = (e) => {
@@ -152,97 +172,141 @@ export default function LeaveApplyPage() {
                     <h3 className="designbox__title">Leave Apply Page</h3>
                 </div>
 
-                <div style={{ display: "flex", alignItems: "center" }}>
-                    <label style={{ minWidth: "5rem" }} htmlFor="date">
-                        From Date
-                    </label>
-                    <DatePickerField
-                        value={startDate}
-                        onChange={handleStartDate}
-                    />
-
-                    <label style={{ minWidth: "5rem" }} htmlFor="date">
-                        To Date
-                    </label>
-                    <DatePickerField value={endDate} onChange={handleEndDate} />
+                <div className="leaveapply__layout-wrapper">
+                    <div className="leaveapply__layout">
+                        <div className="leaveapply__layout-label">
+                            From Date
+                        </div>
+                        <div className="leaveapply__layout-item">
+                            <DatePickerField
+                                value={startDate}
+                                onChange={handleStartDate}
+                            />
+                        </div>
+                    </div>
+                    <div className="leaveapply__layout">
+                        <div className="leaveapply__layout-label">To Date</div>
+                        <div className="leaveapply__layout-item">
+                            <DatePickerField
+                                value={endDate}
+                                onChange={handleEndDate}
+                            />
+                        </div>
+                    </div>
                 </div>
-                <div
-                    style={{
-                        margin: "1rem 0",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                    }}
-                >
-                    <label htmlFor="type">Leave Type</label>
-                    <FormControl sx={{ minWidth: "10rem" }} size="small">
-                        {/* <FormControl sx={{ minWidth: "10rem", marginLeft: "1rem" }} size="small"> */}
-                        <InputLabel
-                            id="leave-type"
-                            sx={{ color: "#645CAA !important" }}
-                        >
-                            Select Type
-                        </InputLabel>
-                        <Select
-                            labelId="leave-type"
-                            id="leave-type"
-                            value={leaveType}
-                            label="Select Type"
-                            onChange={handleLeaveType}
-                            sx={{
-                                "& .MuiOutlinedInput-notchedOutline": {
-                                    borderColor: "#645CAA",
-                                },
-                                "&.Mui-focused .MuiOutlinedInput-notchedOutline":
-                                    {
+
+                <div className="leaveapply__layout-wrapper">
+                    <div className="leaveapply__layout">
+                        <div className="leaveapply__layout-label">
+                            Leave Type
+                        </div>
+                        <div className="leaveapply__layout-item">
+                            <FormControl
+                                sx={{ minWidth: "13rem" }}
+                                size="small"
+                            >
+                                {/* <FormControl sx={{ minWidth: "10rem", marginLeft: "1rem" }} size="small"> */}
+                                <InputLabel
+                                    id="leave-type"
+                                    sx={{ color: "#645CAA !important" }}
+                                >
+                                    Select Type
+                                </InputLabel>
+                                <Select
+                                    labelId="leave-type"
+                                    id="leave-type"
+                                    value={leaveType}
+                                    label="Select Type"
+                                    onChange={handleLeaveType}
+                                    sx={{
+                                        "& .MuiOutlinedInput-notchedOutline": {
+                                            borderColor: "#645CAA",
+                                        },
+                                        "&.Mui-focused .MuiOutlinedInput-notchedOutline":
+                                        {
+                                            borderColor: "#645CAA",
+                                        },
+                                        color: "#645CAA"
+                                    }}
+                                >
+                                    <MenuItem
+                                        value={
+                                            `${process.env.REACT_APP_LEAVE_CASUAL}_${"Casual"}`
+                                        }
+                                    >
+                                        Casual
+                                    </MenuItem>
+                                    <MenuItem
+                                        value={
+                                            `${process.env.REACT_APP_LEAVE_SICK}_${"Sick"}`
+                                        }
+                                    >
+                                        Sick
+                                    </MenuItem>
+                                    <MenuItem
+                                        value={
+                                            `${process.env.REACT_APP_LEAVE_ANNUAL}_${"Annual"}`
+                                        }
+                                    >
+                                        Annual
+                                    </MenuItem>
+                                </Select>
+                            </FormControl>
+                        </div>
+                    </div>
+                    <div className="leaveapply__layout">
+                        <div className="leaveapply__layout-label">Remaining</div>
+                        <div className="leaveapply__layout-item">
+                            <input 
+                                className="leaveapply__layout-input"
+                                disabled 
+                                type="text"  
+                                value={leaveRemaining !== "" ? leaveRemaining + " leaves" : ""}
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <div className="leaveapply__layout-wrapper">
+                    <div className="leaveapply__layout">
+                        <div className="leaveapply__layout-label">Reason</div>
+                        <div className="leaveapply__layout-item">
+                            <TextField
+                                label="Leave Reason"
+                                value={leaveReason}
+                                onChange={handleReason}
+                                id="standard-multiline-static"
+                                multiline
+                                rows={2}
+                                variant="outlined"
+                                InputLabelProps={{
+                                    style: { color: "#645CAA" },
+                                }}
+                                sx={{
+                                    "& .MuiOutlinedInput-notchedOutline": {
                                         borderColor: "#645CAA",
                                     },
-                            }}
-                        >
-                            <MenuItem
-                                value={process.env.REACT_APP_LEAVE_CASUAL}
-                            >
-                                Casual
-                            </MenuItem>
-                            <MenuItem value={process.env.REACT_APP_LEAVE_SICK}>
-                                Sick
-                            </MenuItem>
-                            <MenuItem
-                                value={process.env.REACT_APP_LEAVE_ANNUAL}
-                            >
-                                Annual
-                            </MenuItem>
-                        </Select>
-                    </FormControl>
-                    <label htmlFor="reason">Reason</label>
-                    <TextField
-                        label="Leave Reason"
-                        value={leaveReason}
-                        onChange={handleReason}
-                        id="standard-multiline-static"
-                        multiline
-                        rows={2}
-                        variant="outlined"
-                        // defaultValue="Default Value"
-                        InputLabelProps={{
-                            style: { color: "#645CAA" },
-                        }}
-                        sx={{
-                            "& .MuiOutlinedInput-notchedOutline": {
-                                borderColor: "#645CAA",
-                            },
-                            "& .MuiOutlinedInput-root.Mui-focused": {
-                                "& > fieldset": {
-                                    borderColor: "#645CAA",
-                                    "& > legend": {
-                                        color: "#645CAA",
+                                    "& .MuiOutlinedInput-root.Mui-focused": {
+                                        "& > fieldset": {
+                                            borderColor: "#645CAA",
+                                            "& > legend": {
+                                                color: "#645CAA",
+                                            },
+                                        },
                                     },
-                                },
-                            },
-                        }}
+                                    width: "33.5rem"
+                                }}
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div className="leaveapply__btn-wrapper">
+                    <CustomButton 
+                        label="Apply"
+                        width="10rem"
+                        onClick={handleSubmit} 
                     />
                 </div>
-                <CustomButton label="Apply" onClick={handleSubmit} />
             </div>
         </div>
     );

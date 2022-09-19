@@ -7,7 +7,8 @@ export default function CustomButton({
     disabled = false,
     type="button",
     color="#645CAA",
-    hoverColor="#3b347a"
+    hoverColor="#3b347a",
+    width="max-content"
 }) {
     return (
         <Button
@@ -16,6 +17,7 @@ export default function CustomButton({
             onClick={onClick}
             disabled={disabled}
             sx={{
+                minWidth: width,
                 marginBottom: "0.5rem",
                 textTransform: "none",
                 backgroundColor: color,

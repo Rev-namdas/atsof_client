@@ -2,15 +2,13 @@ import React, { useEffect, useState } from "react";
 import * as api from "../../api/Api";
 import { UnixToDate } from "../../helpers/UnixToDate";
 import { leaveTypes } from "../../helpers/LeaveTypes";
-import { COOKIE_KEY, getCookie } from "../../helpers/CookieStorage";
 
 export default function LeaveStatusPage() {
 	const [leaveBalance, setLeaveBalance] = useState([])
 	const [appliedLeaves, setAppliedLeaves] = useState([])
 
 	const fetchData = async () => {
-		const user = getCookie(COOKIE_KEY.USER_DATA)
-		const res = await api.leaveStatus(user.user_id)
+		const res = await api.leaveStatus()
 
 		setLeaveBalance(res?.leave || [])
 		setAppliedLeaves(res?.leave_dates || [])

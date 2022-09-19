@@ -13,3 +13,56 @@
 	border-radius: 0.5rem;
 	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.5);
 }
+
+.leaveapply__layout-wrapper{
+	display: flex;
+	gap: 1rem;
+	color: #645CAA;
+	font-weight: 650;
+}
+
+.leaveapply__layout{
+	flex: 1;
+	display: flex;
+	align-items: center;
+	margin-bottom: 1rem;
+}
+
+.leaveapply__layout-label{
+	flex: 1;
+}
+
+.leaveapply__layout-item{
+	flex: 2;
+}
+
+.leaveapply__layout-input{
+	height: 2rem;
+	width: 12.5rem !important;
+	border: 1px solid #645CAA;
+	border-radius: 0.3rem;
+	color: #645CAA;
+	text-align: center;
+	font-size: large;
+}
+
+.leaveapply__btn-wrapper{
+	display: flex;
+	justify-content: flex-end;
+}
+
+.recommendpage__wrapper{
+	width: 98vw;
+	display: flex;
+	justify-content: center;
+}
+
+.recommendpage__box{
+	height: max-content;
+	min-width: 80rem;
+	margin: 5rem 0 1rem 0;
+	padding: 0 1.5rem 1.5rem 1.5rem;
+	background-color: white;
+	border-radius: 0.5rem;
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.5);
+}

@@ -346,57 +346,5 @@ export default function UsersAttendancePage() {
                 </div>
             </div>
         </>
-        // <>
-        //     <div>
-        //         <input
-        //             type="date"
-        //             name="date"
-        //             id="date"
-        // value={userDate}
-        // onChange={handleDate}
-        //         />
-        //     </div>
-        //     {
-        //         isLoading
-        //         ? <div>Loading... ...</div>
-        //         : (
-        //             <>
-        //                 <div>
-        //                     <span>User</span>
-        //                     <span> - </span>
-        //                     <span>Department</span>
-        //                     <span> - </span>
-        //                     <span>Month</span>
-        //                     <span> - </span>
-        //                     <span>Date</span>
-        //                     <span> - </span>
-        //                     <span>Login Time</span>
-        //                     <span> - </span>
-        //                     <span>Logout Time</span>
-        //                 </div>
-        //                 <div>
-        //                     {attendances?.map((each, index) => (
-        //                         <div
-        //                             key={index}
-        //                             style={{ color: `${each.late === 1 && "red"}` }}
-        //                         >
-        //                             <span>{ each.username }</span>
-        //                             <span> - </span>
-        //                             <span>{ each.department }</span>
-        //                             <span> - </span>
-        //                             <span>{ each.month }</span>
-        //                             <span> - </span>
-        //                             <span>{ each.date }</span>
-        //                             <span> - </span>
-        //                             <span>{ each.login_time }</span>
-        //                             <span> - </span>
-        //                             <span>{ each.logout_time }</span>
-        //                         </div>
-        //                     ))}
-        //                 </div>
-        //             </>
-        //         )
-        //     }
-        // </>
     );
 }
