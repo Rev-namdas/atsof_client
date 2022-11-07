@@ -1,4 +1,4 @@
-export const api_url = "https://at-sof.herokuapp.com"
+export const api_url = "https://at-sof.herokuapp.com/api/v1"
 
 export const APIENDPOINTS = {
 	user_login: api_url + "/user/auth/login",
